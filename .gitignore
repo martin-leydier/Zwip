@@ -1,0 +1,6 @@
+lib/
+bin/
+sentry
+dev/sentry.cr
+dev/sentry_cli.cr
+.tags*

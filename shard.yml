@@ -1,0 +1,20 @@
+name: Zwip
+version: 0.1.0
+
+authors:
+  - Martin Leydier <martin.leydier@gmail.com>
+
+targets:
+  Zwip:
+    main: app.cr
+
+crystal: 0.28.0
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+
+  slang:
+    github: jeromegn/slang

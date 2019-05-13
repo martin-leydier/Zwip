@@ -15,7 +15,6 @@ get "/.download" do |env|
 end
 
 get "/.zip" do |env|
-    puts env.params.query
     files = env.params.query["files"].split(",", remove_empty: true)
     indexed = index_paths(files, -1)
     if indexed.size == 1 && !indexed[0].directory?

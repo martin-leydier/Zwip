@@ -1,5 +1,5 @@
 doctype html
-html
+html style="background-color: #f9f9fa;"
   head
     title Zwip
     meta charset="utf-8"
@@ -9,7 +9,7 @@ html
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="apple-mobile-web-app-status-bar-style" content="black"
     link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
-    script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"
+    script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"
     script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"
     link rel="stylesheet" href="/css/site.css"
 
@@ -20,10 +20,10 @@ html
         #breadcrumb.ui.breadcrumb.header.item
           a.section href="/"
             i.inverted.home.icon.path-separator
-          - acu = "/"
+          - path = "/"
           - env.request.path.split('/', remove_empty: true).each do |part|
-            - acu += part + "/"
-            a.section href=acu
+            - path += part + "/"
+            a.section href=path
               i.right.angle.small.icon.inverted.path-separator
               == URI.unescape part
         #rightmenu.right.icon.menu
@@ -33,7 +33,7 @@ html
             #cart.ui.black.label style="margin-left: 0;"
               i.cart.arrow.down.icon.inverted
               = get_cart(env).size
-          a.header.item href="https://github.com/martin-leydier/Zwip"
+          a.header.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
             img src="/images/logo.webp"
               ' Zwip
 

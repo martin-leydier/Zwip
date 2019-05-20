@@ -54,7 +54,8 @@ function addCart(path) {
     cartArray.push(path);
     setCart(cartArray);
   }
-  console.debug("cart: " + JSON.parse(decodeURIComponent(getCookie("cart"))))
+  console.debug("cart: " + JSON.parse(decodeURIComponent(getCookie("cart"))));
+  event.stopImmediatePropagation();
 }
 
 function removeFromCart(path, removeNode) {
@@ -77,18 +78,35 @@ async function multiDownload() {
   cartArray = getCart();
   for (var i = cartArray.length - 1; i >= 0; i--) {
     var link = document.createElement("a");
-    var pathArray = cartArray[i].split('/').filter(function(el) {
-      return el !== "";
-    });
-    link.download = ""; //pathArray[pathArray.length - 1];
-    link.href = cartArray[i];
+    link.download = cartArray[i];
+    link.href = "/.zip?files=" + encodeURI(cartArray[i]);
     link.click();
     removeFromCart(cartArray[i]);
     await sleep(500);
   }
 }
 
-function navigateContent(path) {
+
+function generateBreadCrumb() {
+  var $breadcrumb = $("<a>", {"class": "section", "href": "/", "onclick": "event.preventDefault();navigateContent('/')"})
+                    .append($("<i>", {"class": "i inverted home icon path-separator"}));
+  $('#breadcrumb').html('')
+  $('#breadcrumb').append($breadcrumb);
+  var curPathArray = window.location.pathname.split('/');
+  var arrayLength = curPathArray.length;
+  var path = "/";
+  // Skip first and last as they are empty
+  for (var i = 1; i < arrayLength - 1; i++) {
+    if (curPathArray[i] == "")
+      continue;
+    path += curPathArray[i] + "/";
+    $('#breadcrumb').append($("<a>", {"class": "section", "href": path, "onclick": "event.preventDefault();navigateContent('" + path + "')"})
+      .append($("<i>", {"class": "i  right angle small icon inverted path-separator"}))
+      .append(decodeURI(curPathArray[i])));
+  }
+}
+
+function navigateContent(path, pushState = true) {
   if (path[0] !== '/')
     path = window.location.pathname + path
   NProgress.start();
@@ -99,7 +117,8 @@ function navigateContent(path) {
     dataType: 'html'
   })
   .done(function(data) {
-    history.pushState(null, null, path);
+    if (pushState)
+      history.pushState(null, null, path);
     $('#content').html(data);
   })
   .fail(function(data) {
@@ -107,6 +126,11 @@ function navigateContent(path) {
     console.error(data);
   })
   .always(function() {
+    generateBreadCrumb();
     NProgress.done();
   });
 }
+
+window.addEventListener("popstate", function(e) {
+  navigateContent(location.pathname, false);
+});

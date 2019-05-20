@@ -14,4 +14,4 @@ ENV ROOT=$ROOT
 ADD . /zwip
 RUN make release
 
-ENTRYPOINT ["bin/Zwip"]
+CMD ["bin/Zwip"]

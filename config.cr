@@ -6,7 +6,7 @@ require "./src/zwip.cr"
 
 File.read_lines(".env").each do |line|
   key, value = line.strip.split "="
-  ENV[key] = value
+  ENV[key] ||= value
 end
 
 ENV["ROOT"] = File.expand_path(ENV["ROOT"])

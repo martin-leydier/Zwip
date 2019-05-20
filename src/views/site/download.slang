@@ -3,7 +3,7 @@
     i.linkify.icon
     ' Multi-link download
   .content
-    p Multi-link download will start one download per file in the cart. While this has the advantage of allowing to resume the download and separate management of each file. Depending on the number of files, you may experience issues like crashes or slow-downs.
+    p Multi-link download will start one download per file in the cart. This allows you to pause/resume your download. Depending on the number of files, you may experience issues like crashes or slow-downs.
     br
     p You may also get a warning from your browser about trying to download multiple files.
   .actions

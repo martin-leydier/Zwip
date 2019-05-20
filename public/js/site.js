@@ -87,3 +87,26 @@ async function multiDownload() {
     await sleep(500);
   }
 }
+
+function navigateContent(path) {
+  if (path[0] !== '/')
+    path = window.location.pathname + path
+  NProgress.start();
+  console.debug('Loading content at: ' + path);
+  $.ajax({
+    url: path,
+    type: 'GET',
+    dataType: 'html'
+  })
+  .done(function(data) {
+    history.pushState(null, null, path);
+    $('#content').html(data);
+  })
+  .fail(function(data) {
+    console.error("Failed to load new page");
+    console.error(data);
+  })
+  .always(function() {
+    NProgress.done();
+  });
+}

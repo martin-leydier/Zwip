@@ -12,13 +12,15 @@ html style="background-color: #f9f9fa;"
     script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"
     script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"
     link rel="stylesheet" href="/css/site.css"
+    script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"
+    script src="/js/site.js"
 
 
   body
     .ui.fixed.inverted.icon.menu
       .ui.container
         #breadcrumb.ui.breadcrumb.header.item
-          a.section href="/"
+          a.section href="/" onclick="event.preventDefault();navigateContent('/')"
             i.inverted.home.icon.path-separator
           - path = "/"
           - env.request.path.split('/', remove_empty: true).each do |part|
@@ -27,9 +29,9 @@ html style="background-color: #f9f9fa;"
               i.right.angle.small.icon.inverted.path-separator
               == URI.unescape part
         #rightmenu.right.icon.menu
-          a#download.item href="/.download"
+          a#download.item href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
             i.download.icon.inverted
-          a.item href="/.list"
+          a.item href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
             #cart.ui.black.label style="margin-left: 0;"
               i.cart.arrow.down.icon.inverted
               = get_cart(env).size
@@ -37,7 +39,5 @@ html style="background-color: #f9f9fa;"
             img src="/images/logo.webp"
               ' Zwip
 
-    .ui.main.container
+    #content.ui.main.container
       == content
-
-script src="/js/site.js"

@@ -11,7 +11,7 @@ end
 
 
 get "/.download" do |env|
-    view("site/download")
+    view("site/download", env)
 end
 
 get "/.zip" do |env|
@@ -34,12 +34,12 @@ end
 get "/.list" do |env|
     cart = get_cart(env)
 
-    view("site/list")
+    view("site/list", env)
 end
 
 get "/" do |env|
     files = FileSystem.index(ENV["ROOT"]).as(FileSystem::FileSystemDirectory)
-    view("site/index")
+    view("site/index", env)
 end
 
 get "/*" do |env|
@@ -47,7 +47,7 @@ get "/*" do |env|
     path = env.request.path
     files = FileSystem.index(full_path env)
     if files.is_a? FileSystem::FileSystemDirectory
-        view("site/index")
+        view("site/index", env)
     else
         send_file env, files.real_path
     end

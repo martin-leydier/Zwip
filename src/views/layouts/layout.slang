@@ -11,9 +11,9 @@ html style="background-color: #f9f9fa;"
     link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css"
     script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"
     script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"
-    link rel="stylesheet" href="/css/site.css"
     script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"
-    script src="/js/site.js"
+    link rel="stylesheet" href="/css/site.css?v=1.1"
+    script src="/js/site.js?v=1.1"
 
 
   body

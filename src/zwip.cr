@@ -26,7 +26,7 @@ get "/.zip" do |env|
         end
         env.response.content_type = "application/zip"
         env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
-        puts Process.run(command: "zip", args: args , clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: ENV["ROOT"])
+        Process.run(command: "zip", args: args , clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: ENV["ROOT"])
     end
     env
 end

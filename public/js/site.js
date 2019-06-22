@@ -69,6 +69,10 @@ function removeFromCart(path, removeNode) {
   }
 }
 
+function clearCart() {
+  setCart([]);
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -120,6 +124,7 @@ function navigateContent(path, pushState = true) {
     if (pushState)
       history.pushState(null, null, path);
     $('#content').html(data);
+    scroll(0,0);
   })
   .fail(function(data) {
     console.error("Failed to load new page");

@@ -21,7 +21,7 @@
         .ui.icon.header
           i.file.archive.icon
           ' Zip
-        a.ui.primary.labeled.icon.button href="#{build_dl(env)}"
+        a.ui.primary.labeled.icon.button href="#{build_dl(env)}" onclick="clearCart();"
           i.download.icon
           ' Download
       .column

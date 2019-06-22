@@ -13,7 +13,7 @@
     - else
       - lnk = ""
     a.header href=lnk onclick="event.preventDefault();navigateContent('#{lnk}')"
-      .ui.vertical.clearing.segment
+      .ui.vertical.clearing.tight.segment
         h5.ui.left.vertically-centered.floated.header
           - unless file.directory?
             .ui.right.floated.label

@@ -14,6 +14,8 @@ dev/sentry.cr: shards
 dev: dev/sentry.cr
 	crystal dev/sentry_config.cr
 
-
 release:
 	shards build --release
+
+release_static:
+	shards build --release --static

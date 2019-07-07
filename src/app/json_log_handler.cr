@@ -16,6 +16,6 @@ class JsonLogHandler < Kemal::BaseLogHandler
   end
 
   def write(message : String)
-    @io << "{\"time\": \""<< Time.now.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\", \"message\": " << message.chomp.to_json << "}\n"
+    @io << "{\"time\":\""<< Time.now.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message.chomp.to_json << "}\n"
   end
 end

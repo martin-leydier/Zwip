@@ -19,14 +19,16 @@ get "/.zip" do |env|
     indexed = index_paths(files, -1)
     if indexed.size == 1 && !indexed[0].directory?
         send_file env, indexed[0].real_path, filename: indexed[0].basename
-    else
+    elsif indexed.size > 0
         args = ["-", "-r", "-0", "--"]
         indexed.each do |i|
             args << ".#{i.path}"
         end
         env.response.content_type = "application/zip"
         env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
-        Process.run(command: "zip", args: args , clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: ENV["ROOT"])
+        Process.run(command: ZIP_PATH, args: args , clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: ENV["ROOT"])
+    else
+        env.redirect "/.download"
     end
     env
 end

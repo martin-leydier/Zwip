@@ -1,0 +1,11 @@
+bin/
+dev/
+lib/
+.dockerignore
+.drone.yml
+.gitignore
+lib/
+bin/
+sentry
+.tags*
+Dockerfile

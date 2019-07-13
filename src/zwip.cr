@@ -15,10 +15,10 @@ get "/.download" do |env|
 end
 
 get "/.zip" do |env|
-    files = env.params.query["files"].split(",", remove_empty: true)
+    files = env.params.query["files"].split(',', remove_empty: true)
     indexed = index_paths(files, -1)
     if indexed.size == 1 && !indexed[0].directory?
-        send_file env, indexed[0].real_path, filename: indexed[0].basename
+        send_file env, indexed[0].real_path, filename: indexed[0].basename, disposition: "attachment"
     elsif indexed.size > 0
         args = ["-", "-r", "-0", "--"]
         indexed.each do |i|
@@ -35,7 +35,6 @@ end
 
 get "/.list" do |env|
     cart = get_cart(env)
-
     view("site/list", env)
 end
 

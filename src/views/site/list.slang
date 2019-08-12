@@ -8,5 +8,5 @@
         i.icon class="#{file.icon}"
         .content
           = file.path
-      .ui.right.floated.red.icon.button onclick="removeFromCart('#{file.path}', this.parentNode);"
+      .ui.right.floated.red.icon.button onclick="removeFromCart('#{URI.escape file.path}', this.parentNode);"
         i.close.icon

@@ -4,10 +4,8 @@ class JsonLogHandler < Kemal::BaseLogHandler
   end
 
   def call(context : HTTP::Server::Context)
-    time = Time.now
-    call_next(context)
-    elapsed = Time.now - time
-    @io << "{\"time\":\""<< time.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\","
+    elapsed = Time.measure { call_next(context) }
+    @io << "{\"time\":\""<< Time.now.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\","
     @io << "\"http_status\":" << context.response.status_code << ","
     @io << "\"http_method\":\"" << context.request.method << "\","
     @io << "\"http_uri_path\":" << context.request.resource.to_json << ","

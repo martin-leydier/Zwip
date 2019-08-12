@@ -49,7 +49,8 @@ function setCart(cartArray) {
 }
 
 function addCart(path) {
-  cartArray = getCart();
+  path = decodeURIComponent(path);
+  var cartArray = getCart();
   if (!cartArray.includes(path)) {
     cartArray.push(path);
     setCart(cartArray);
@@ -59,7 +60,8 @@ function addCart(path) {
 }
 
 function removeFromCart(path, removeNode) {
-  cartArray = getCart();
+  path = decodeURIComponent(path);
+  var cartArray = getCart();
   cartArray = cartArray.filter(function(el) {
     return el !== path;
   });
@@ -77,9 +79,17 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function instantDownload(path) {
+  path = decodeURIComponent(path);
+  var link = document.createElement("a");
+  link.download = path;
+  link.href = "/.zip?files=" + encodeURI(path);
+  link.click();
+  event.stopImmediatePropagation();
+}
 
 async function multiDownload() {
-  cartArray = getCart();
+  var cartArray = getCart();
   for (var i = cartArray.length - 1; i >= 0; i--) {
     var link = document.createElement("a");
     link.download = cartArray[i];
@@ -111,6 +121,7 @@ function generateBreadCrumb() {
 }
 
 function navigateContent(path, pushState = true) {
+  path = decodeURIComponent(path);
   if (path[0] !== '/')
     path = window.location.pathname + path
   NProgress.start();

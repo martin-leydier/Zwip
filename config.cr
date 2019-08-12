@@ -24,5 +24,4 @@ end || ""
 abort "Could not find zip(1) in PATH" if ZIP_PATH == ""
 
 Kemal.config.powered_by_header = false
-
 Kemal.config.logger = JsonLogHandler.new

@@ -9,7 +9,7 @@ module FileStorage
     req = ctx.request
     resp = ctx.response
     resp.status_code = 200
-    # resp.content_type = MIME.from_filename(file.path)
+    resp.content_type = MIME.from_filename?(file.path) || "text/html"
     if req.headers["Accept-Encoding"]? =~ /gzip/
       resp.headers["Content-Encoding"] = "gzip"
       resp.content_length = file.compressed_size

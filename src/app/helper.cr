@@ -4,6 +4,7 @@ def valid_path?(path : String)
     request_path = expanded_path.lchop(ENV["ROOT"]).split('/', remove_empty: true)
     return true if request_path.size == 1 && ( {".list", ".download", ".zip"}.any? request_path[0])
     return false if request_path.any? { |e| e[0] == '.'  }
+    return true if FileStorage.files.map(&.path).includes?(expanded_path.lchop(ENV["ROOT"]))
     return File.exists? expanded_path
 end
 
@@ -48,4 +49,3 @@ def build_dl(env)
         end
     end
 end
-

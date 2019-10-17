@@ -1,5 +1,26 @@
 require "./app/helper.cr"
 require "./app/filesystem.cr"
+require "baked_file_system"
+
+module FileStorage
+    BakedFileSystem.load("../public", __DIR__)
+
+    def self.serve(file, ctx)
+        req = ctx.request
+        resp = ctx.response
+        resp.status_code = 200
+        # resp.content_type = MIME.from_filename(file.path)
+        if req.headers["Accept-Encoding"]? =~ /gzip/
+        resp.headers["Content-Encoding"] = "gzip"
+        resp.content_length = file.compressed_size
+        file.write_to_io(resp, compressed: true)
+        else
+        resp.content_length = file.size
+        file.write_to_io(resp, compressed: false)
+        end
+    end
+end
+
 
 before_get do |env|
     request_path = full_path env
@@ -51,5 +72,11 @@ get "/*" do |env|
         view("site/index", env)
     else
         send_file env, files.real_path
+    end
+end
+
+FileStorage.files.each do |file|
+    get(file.path) do |env|
+        FileStorage.serve(file, env)
     end
 end

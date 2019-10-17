@@ -7,4 +7,3 @@ sentry = Sentry::ProcessRunner.new(
   files: ["./*.cr", "./src/**/*.cr", "./src/**/*.slang"]
 )
 sentry.run
-

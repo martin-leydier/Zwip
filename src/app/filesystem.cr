@@ -108,7 +108,6 @@ module FileSystem
     return this
   end
 
-
   private def sorted_indexable(entries, base_path)
     visible = [] of Tuple(String, File::Info)
     entries.each do |e|
@@ -116,9 +115,9 @@ module FileSystem
       full_path = File.join(base_path, e)
       next unless File.readable? full_path
       info = File.info full_path
-      visible << { full_path, info }
+      visible << {full_path, info}
     end
-    return visible.sort{ |a, b| dir_sort(a[0], b[0], a[1], b[1]) }
+    return visible.sort { |a, b| dir_sort(a[0], b[0], a[1], b[1]) }
   end
 
   # A comparison function to sort a directory content
@@ -139,16 +138,16 @@ module FileSystem
     path_2 = path_2.downcase
 
     is_dir_1 = if file_info_1.nil?
-      File.directory? path_1
-    else
-      file_info_1.directory?
-    end
+                 File.directory? path_1
+               else
+                 file_info_1.directory?
+               end
 
     is_dir_2 = if file_info_2.nil?
-      File.directory? path_2
-    else
-      file_info_2.directory?
-    end
+                 File.directory? path_2
+               else
+                 file_info_2.directory?
+               end
 
     if is_dir_1
       if is_dir_2

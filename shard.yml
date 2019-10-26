@@ -15,6 +15,7 @@ license: MIT
 dependencies:
   kemal:
     github: kemalcr/kemal
-
   slang:
     github: jeromegn/slang
+  baked_file_system:
+    github: schovi/baked_file_system

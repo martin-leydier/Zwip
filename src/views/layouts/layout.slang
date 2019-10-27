@@ -29,13 +29,12 @@ html style="background-color: #f9f9fa;"
       #rightmenu
         a.item#download href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
           i.fas.fa-download
-        a.item href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
-          #cart.ui.black.label style="margin-left: 0;"
-            i.fas.fa-cart-arrow-down
-            = get_cart(env).size
+        a.item#cart href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
+          i.fas.fa-cart-arrow-down style="margin-right: .5rem;"
+          = get_cart(env).size
         a.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
           img src="/images/logo.webp"
-            | Zwip
+          | Zwip
 
     #content.ui.main.container
       == content

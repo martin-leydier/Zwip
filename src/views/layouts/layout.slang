@@ -27,7 +27,7 @@ html style="background-color: #f9f9fa;"
             - path += part + "/"
             a.section href=path
               i.right.angle.small.icon.inverted.path-separator
-              == URI.unescape part
+              == HTML.escape(URI.decode_www_form part)
         #rightmenu.right.icon.menu
           a#download.item href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
             i.download.icon.inverted

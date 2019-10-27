@@ -1,6 +1,8 @@
+require "baked_file_system"
+require "html"
+
 require "./app/helper.cr"
 require "./app/filesystem.cr"
-require "baked_file_system"
 
 module FileStorage
   BakedFileSystem.load("../public", __DIR__)

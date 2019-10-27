@@ -13,7 +13,7 @@ def full_path(path : String)
 end
 
 def full_path(env : HTTP::Server::Context)
-  File.join(ENV["ROOT"], URI.unescape(env.request.path))
+  File.join(ENV["ROOT"], URI.decode_www_form(env.request.path))
 end
 
 def index_paths(paths : Array(String), depth = 0) : Array(FileSystem::FileSystemEntry)
@@ -43,7 +43,7 @@ def build_dl(env)
   String.build do |io|
     io << "/.zip?files="
     cart.join(",", io) do |item, join_io|
-      URI.escape(item.path, join_io)
+      URI.encode_www_form(item.path, join_io)
     end
     cart.each do |item|
     end

@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: default
 
@@ -14,3 +15,8 @@ steps:
   when:
     branch:
       - master
+---
+kind: signature
+hmac: 97d1edc97be43a97b148a564e937ce4d0ee664346f773ffe6efe05d7f5b5a383
+
+...

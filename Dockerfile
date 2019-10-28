@@ -21,7 +21,7 @@ FROM alpine:edge AS cr_build
 COPY . /zwip
 WORKDIR /zwip
 # mailcap provides mime types
-RUN apk add 'crystal=0.30.0-r0' 'shards=0.9.0-r0' mailcap && \
+RUN apk add 'crystal=0.31.1-r0' 'shards=0.9.0-r0' mailcap && \
     apk add --virtual build-dependencies zlib-dev openssl-dev build-base gcc && \
     make release_static
 

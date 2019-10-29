@@ -1,9 +1,11 @@
-# Dependencies
-FROM gcc:9 AS deps_build
+# App build
+FROM alpine:edge AS build
 
 WORKDIR /build
 # compile su-exec, linked statically
-RUN git clone https://github.com/ncopa/su-exec.git && \
+# mailcap provides mime types
+RUN apk add gcc musl-dev git zlib-static zlib-dev openssl-libs-static openssl-dev build-base wget 'crystal=0.31.1-r0' 'shards=0.9.0-r0' mailcap && \
+    git clone https://github.com/ncopa/su-exec.git && \
     cd su-exec && \
     make su-exec-static && \
 # compile zip(1), linked statically
@@ -14,17 +16,9 @@ RUN git clone https://github.com/ncopa/su-exec.git && \
 # force staticy link flag, yes by changing the C compiler, it's the most horrendous thing ever made, but it works, even when the makefile is a bit weird
     make CC="gcc -static -s" -f unix/Makefile generic
 
-
-# App build
-FROM alpine:edge AS cr_build
-
 COPY . /zwip
 WORKDIR /zwip
-# mailcap provides mime types
-RUN apk add 'crystal=0.31.1-r0' 'shards=0.9.0-r0' mailcap && \
-    apk add --virtual build-dependencies zlib-static zlib-dev openssl-libs-static openssl-dev build-base gcc && \
-    make release_static
-
+RUN make release_static
 
 # Final container
 FROM scratch
@@ -33,15 +27,14 @@ VOLUME ["/var/www/"]
 EXPOSE 3000/tcp
 ENV UID=1014 GID=1014 PATH="/sbin" ROOT="/var/www/" KEMAL_ENV=production
 
-COPY --from=deps_build /build/su-exec/su-exec-static /sbin/su-exec
-COPY --from=deps_build /build/zip30/zip /sbin/zip
+COPY --from=build /build/su-exec/su-exec-static /sbin/su-exec
+COPY --from=build /build/zip30/zip /sbin/zip
 COPY busybox /bin/busybox
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/bin/busybox", "sh", "/entrypoint.sh"]
 
-COPY --from=cr_build /zwip/bin/Zwip /Zwip
-COPY --from=cr_build /etc/mime.types /etc/mime.types
-COPY --from=cr_build /zwip/public /public
+COPY --from=build /zwip/bin/Zwip /Zwip
+COPY --from=build /etc/mime.types /etc/mime.types
 
 CMD ["/Zwip"]

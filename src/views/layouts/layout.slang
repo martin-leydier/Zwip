@@ -20,21 +20,30 @@ html style="background-color: #f9f9fa;"
       #breadcrumb.item
         a.tooltip.tooltip-bottom href="/" onclick="event.preventDefault();navigateContent('/')" data-tooltip="Home"
           i.fas.fa-home
-        - path = "/"
-        - env.request.path.split('/', remove_empty: true).each do |part|
-          - path += part + "/"
+        - if env.request.path == "/.list"
           i.fas.fa-slash.path-separator
-          a href=path
-            == HTML.escape(URI.decode_www_form part)
+          a.tooltip.tooltip-bottom href="/.list" onclick="event.preventDefault();navigateContent('/.cart')" data-tooltip="Cart"
+            i.fas.fa-cart-arrow-down
+        - elsif env.request.path == "/.download"
+          i.fas.fa-slash.path-separator
+          a.tooltip.tooltip-bottom href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download cart"
+            i.fas.fa-download
+        - else
+          - path = "/"
+          - env.request.path.split('/', remove_empty: true).each do |part|
+            - path += part + "/"
+            i.fas.fa-slash.path-separator
+            a href=path
+              == HTML.escape(URI.decode_www_form part)
       #rightmenu
-        a.item#download href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
+        a.item.tooltip.tooltip-bottom#download data-tooltip="Download cart" href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
           i.fas.fa-download
-        a.item#cart href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
+        a.item.tooltip.tooltip-bottom#cart data-tooltip="Cart" href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
           i.fas.fa-cart-arrow-down style="margin-right: .5rem;"
           = get_cart(env).size
         a.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
           img src="/images/logo.webp"
           | Zwip
 
-    #content.ui.main.container
+    #content
       == content

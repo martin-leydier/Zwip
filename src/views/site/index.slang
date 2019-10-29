@@ -1,19 +1,28 @@
-#items
+#entries
   - if env.request.path != "/"
     a href="#{env.request.path}.." onclick="event.preventDefault();navigateContent('#{URI.encode_www_form env.request.path}..')"
-      i.icon.left.arrow
-      ' ..
+      i.fas.fa-left-arrow
+      = env.request.path
   - files.each do |file|
-    hr
     - if file.directory?
       - lnk = "#{file.basename}/"
     - else
       - lnk = ""
-    a href=lnk onclick="event.preventDefault();navigateContent('#{URI.encode_www_form lnk}')"
-      - unless file.directory?
-        = file.size.humanize_bytes
-      = file.basename
-      .ui.basic.right.floated.icon.button onclick="event.preventDefault();instantDownload('#{URI.encode_www_form file.path}');"
-        i.download.icon
-      .ui.basic.right.floated.icon.button onclick="event.preventDefault();addCart('#{URI.encode_www_form file.path}');"
-        i.cart.plus.icon
+    .entry
+      - if file.directory?
+        a.highlightable.entry-link href=lnk onclick="event.preventDefault();navigateContent('#{URI.encode_www_form lnk}')"
+          i.fas.fa-folder
+          .content
+            = file.basename
+      - else
+        .entry-link
+          i.fas.fa-file
+          .content
+            = file.basename
+          .size-badge
+            = file.size.humanize_bytes
+      .entry-buttons
+        a.entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Download entry" href="/.zip?files=#{URI.encode_www_form file.path}"
+          i.fas.fa-download
+        .entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Add to cart" onclick="event.preventDefault();addCart('#{URI.encode_www_form file.path}');"
+          i.fas.fa-cart-plus

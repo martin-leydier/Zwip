@@ -2,15 +2,24 @@
   a.highlightable.entry-link href="/" onclick="event.preventDefault();navigateContent('/')"
     i.fas.fa-home
     .content
-      ' Home
+      | Home
 .spacer
-.empty#emptyCart hidden=!cart.empty?
-  .content
-    span.fa-stack.fa-2x
-      i.fas.fa-file.fa-stack-1x
-      i.fas.fa-slash.fa-stack-1x
-      i.fas.fa-slash.fa-stack-1x.double-slash
-    h3 ' Your cart is empty
+- if cart.empty?
+  .empty#emptyCart
+    .content
+      span.fa-stack.fa-3x
+        i.fas.fa-file.fa-stack-1x
+        i.fas.fa-slash.fa-stack-1x
+        i.fas.fa-slash.fa-stack-1x.double-slash
+      h3 | Your cart is empty
+- else
+  .empty#emptyCart hidden=true
+    .content
+      span.fa-stack.fa-2x
+        i.fas.fa-file.fa-stack-1x
+        i.fas.fa-slash.fa-stack-1x
+        i.fas.fa-slash.fa-stack-1x.double-slash
+      h3 | Your cart is empty
 #entries
   - cart.each do |file|
     .entry

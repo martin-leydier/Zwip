@@ -1,15 +1,9 @@
-jQuery.fn.textNodes = function() {
-  return this.contents().filter(function() {
-    return (this.nodeType === Node.TEXT_NODE && this.nodeValue.trim() !== "");
-  });
-}
-
 function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
     while (c.charAt(0) == ' ') {
       c = c.substring(1);
     }
@@ -21,15 +15,15 @@ function getCookie(cname) {
 }
 
 function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
+  let d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires="+ d.toUTCString();
+  let expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function getCart() {
-  var cart = getCookie("cart");
-  var cartArray = [];
+  let cart = getCookie("cart");
+  let cartArray = [];
   if (cart !== "") {
     try {
       cartArray = JSON.parse(decodeURIComponent(cart));
@@ -45,12 +39,12 @@ function getCart() {
 
 function setCart(cartArray) {
   setCookie("cart", encodeURIComponent(JSON.stringify(cartArray)), 30);
-  $('#cart').textNodes().replaceWith(cartArray.length);
+  document.getElementById('cartCount').textContent = cartArray.length
 }
 
 function addCart(path) {
   path = decodeURIComponent(path);
-  var cartArray = getCart();
+  let cartArray = getCart();
   if (!cartArray.includes(path)) {
     cartArray.push(path);
     setCart(cartArray);
@@ -61,13 +55,19 @@ function addCart(path) {
 
 function removeFromCart(path, removeNode) {
   path = decodeURIComponent(path);
-  var cartArray = getCart();
+  let cartArray = getCart();
   cartArray = cartArray.filter(function(el) {
     return el !== path;
   });
   setCart(cartArray);
   if (removeNode) {
       removeNode.remove();
+  }
+  if (cartArray.length === 0) {
+    let empty = document.getElementById('emptyCart');
+    if (empty) {
+      empty.removeAttribute("hidden");
+    }
   }
 }
 
@@ -79,19 +79,10 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function instantDownload(path) {
-  path = decodeURIComponent(path);
-  var link = document.createElement("a");
-  link.download = path;
-  link.href = "/.zip?files=" + encodeURI(path);
-  link.click();
-  event.stopImmediatePropagation();
-}
-
 async function multiDownload() {
-  var cartArray = getCart();
-  for (var i = cartArray.length - 1; i >= 0; i--) {
-    var link = document.createElement("a");
+  let cartArray = getCart();
+  for (let i = cartArray.length - 1; i >= 0; i--) {
+    let link = document.createElement("a");
     link.download = cartArray[i];
     link.href = "/.zip?files=" + encodeURI(cartArray[i]);
     link.click();
@@ -100,51 +91,107 @@ async function multiDownload() {
   }
 }
 
-
 function generateBreadCrumb() {
-  var $breadcrumb = $("<a>", {"class": "section", "href": "/", "onclick": "event.preventDefault();navigateContent('/')"})
-                    .append($("<i>", {"class": "i inverted home icon path-separator"}));
-  $('#breadcrumb').html('')
-  $('#breadcrumb').append($breadcrumb);
-  var curPathArray = window.location.pathname.split('/');
-  var arrayLength = curPathArray.length;
-  var path = "/";
-  // Skip first and last as they are empty
-  for (var i = 1; i < arrayLength - 1; i++) {
-    if (curPathArray[i] == "")
-      continue;
-    path += curPathArray[i] + "/";
-    $('#breadcrumb').append($("<a>", {"class": "section", "href": path, "onclick": "event.preventDefault();navigateContent('" + path + "')"})
-      .append($("<i>", {"class": "i  right angle small icon inverted path-separator"}))
-      .append(decodeURI(curPathArray[i])));
+  function createSeparator() {
+    let separator = document.createElement("i");
+    separator.className = "fas fa-slash path-separator";
+    return separator;
   }
+  function createPart(path, txt) {
+    let lnk = document.createElement("a");
+    lnk.href = path;
+    lnk.textContent = txt;
+    lnk.onclick = function() {
+      event.preventDefault();
+      navigateContent(path);
+    }
+    return lnk
+  }
+  function createSpecial(path) {
+    let special = document.createElement("a");
+    special.className = "tooltip tooltip-bottom";
+    special.href = "/" + path;
+    special.onclick = function() {
+      event.preventDefault();
+      navigateContent("/" + path);
+    }
+    let specialIcon = document.createElement("i");
+    special.appendChild(specialIcon);
+    if (path === ".list") {
+      special.setAttribute("data-tooltip", "Cart");
+      specialIcon.className = "fas fa-cart-arrow-down";
+    }
+    else {
+      special.setAttribute("data-tooltip", "Download");
+      specialIcon.className = "fas fa-download";
+    }
+    return special;
+  }
+  let breadcrumb_tree = document.createElement("div");
+  breadcrumb_tree.id = "breadcrumb";
+  breadcrumb_tree.className = "item";
+
+  let home = document.createElement("a");
+  home.className = "tooltip tooltip-bottom";
+  home.href = "/";
+  home.onclick = function() {
+    event.preventDefault();
+    navigateContent("/");
+  }
+  home.setAttribute("data-tooltip", "Home");
+  let homeIcon = document.createElement("i");
+  homeIcon.className = "fas fa-home";
+  home.appendChild(homeIcon);
+  breadcrumb_tree.appendChild(home)
+
+  let curPathArray = window.location.pathname.split('/');
+  let arrayLength = curPathArray.length;
+  let path = "/";
+  // Skip first as it is empty
+  for (let i = 1; i < arrayLength; i++) {
+    if (curPathArray[i] === "")
+      continue;
+    let breadcrumb_part;
+    if (curPathArray[i] === ".list" || curPathArray[i] === ".download") {
+      breadcrumb_part = createSpecial(curPathArray[i]);
+    }
+    else {
+      path += curPathArray[i] + "/";
+      breadcrumb_part = createPart(path, decodeURI(curPathArray[i]));
+    }
+    breadcrumb_tree.appendChild(createSeparator());
+    breadcrumb_tree.appendChild(breadcrumb_part);
+  }
+  let breadcrumb = document.getElementById('breadcrumb');
+  breadcrumb.parentNode.replaceChild(breadcrumb_tree, breadcrumb);
 }
 
 function navigateContent(path, pushState = true) {
   path = decodeURIComponent(path);
   if (path[0] !== '/')
     path = window.location.pathname + path
-  NProgress.start();
-  console.debug('Loading content at: ' + path);
-  $.ajax({
-    url: path,
-    type: 'GET',
-    dataType: 'html'
-  })
-  .done(function(data) {
-    if (pushState)
-      history.pushState(null, null, path);
-    $('#content').html(data);
-    scroll(0,0);
-  })
-  .fail(function(data) {
-    console.error("Failed to load new page");
-    console.error(data);
-  })
-  .always(function() {
-    generateBreadCrumb();
-    NProgress.done();
-  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+
+    if(xhr.readyState === 4) {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        if (pushState)
+          history.pushState(null, null, path);
+
+        document.getElementById('content').innerHTML = xhr.response;
+      }
+      else {
+        console.error("Failed to load new page");
+        console.error(xhr);
+      }
+      scroll(0,0);
+      generateBreadCrumb();
+    }
+  };
+  xhr.open("GET", path);
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr.send();
 }
 
 window.addEventListener("popstate", function(e) {

@@ -1,28 +1,30 @@
-#items
+#entries
   - if env.request.path != "/"
-    a.header href="#{env.request.path}.." onclick="event.preventDefault();navigateContent('#{URI.encode_www_form env.request.path}..')"
-      .ui.middle.aligned.vertical.segment
-        h5.ui.header
-          i.icon.left.arrow
-          .content
-            ' ..
+    .entry.tooltip.tooltip-bottom data-tooltip="Go back to parent directory"
+      a.highlightable.entry-link href="#{env.request.path}.." onclick="event.preventDefault();navigateContent('#{URI.encode_www_form env.request.path, space_to_plus: false}..')"
+        i.fas.fa-arrow-left
+        .content
+          = get_prev_folder(env.request.path)
   - files.each do |file|
-    .ui.fitted.divider
     - if file.directory?
       - lnk = "#{file.basename}/"
     - else
       - lnk = ""
-    a.header href=lnk onclick="event.preventDefault();navigateContent('#{URI.encode_www_form lnk}')"
-      .ui.vertical.clearing.tight.segment
-        h5.ui.left.vertically-centered.floated.header
-          - unless file.directory?
-            .ui.right.floated.label
-              = file.size.humanize_bytes
-          i.icon class=file.icon
+    .entry
+      - if file.directory?
+        a.highlightable.entry-link href=lnk onclick="event.preventDefault();navigateContent('#{URI.encode_www_form lnk, space_to_plus: false}')"
+          i.fas.fa-folder
           .content
             = file.basename
-        .ui.right.floated.basic.buttons
-          .ui.basic.right.floated.icon.button onclick="event.preventDefault();instantDownload('#{URI.encode_www_form file.path}');"
-            i.download.icon
-          .ui.basic.right.floated.icon.button onclick="event.preventDefault();addCart('#{URI.encode_www_form file.path}');"
-            i.cart.plus.icon
+      - else
+        .entry-link
+          i.fas.fa-file
+          .content
+            = file.basename
+          .size-badge
+            = file.size.humanize_bytes
+      .entry-buttons
+        a.entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Download entry" href="/.zip?files=#{URI.encode_www_form file.path, space_to_plus: false}"
+          i.fas.fa-download
+        .entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Add to cart" onclick="event.preventDefault();addCart('#{URI.encode_www_form file.path, space_to_plus: false}');"
+          i.fas.fa-cart-plus

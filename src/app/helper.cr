@@ -13,7 +13,7 @@ def full_path(path : String)
 end
 
 def full_path(env : HTTP::Server::Context)
-  File.join(ENV["ROOT"], URI.decode_www_form(env.request.path))
+  File.join(ENV["ROOT"], URI.decode_www_form(env.request.path, plus_to_space: false))
 end
 
 def index_paths(paths : Array(String), depth = 0) : Array(FileSystem::FileSystemEntry)
@@ -30,7 +30,7 @@ def get_cart(env) : Array(FileSystem::FileSystemEntry)
   if env.request.cookies["cart"]?
     begin
       cart_paths = Array(String).from_json(env.request.cookies["cart"].value)
-      return index_paths(cart_paths)
+      return index_paths(cart_paths, -1)
     rescue e : JSON::ParseException
       return [] of FileSystem::FileSystemEntry
     end
@@ -43,9 +43,16 @@ def build_dl(env)
   String.build do |io|
     io << "/.zip?files="
     cart.join(",", io) do |item, join_io|
-      URI.encode_www_form(item.path, join_io)
+      URI.encode_www_form(item.path, join_io, space_to_plus: false)
     end
     cart.each do |item|
     end
   end
+end
+
+def get_prev_folder(path)
+  path_split = path.split("/", remove_empty: true)
+  return "/" if path_split.size < 2
+
+  return URI.decode_www_form(path_split[-2], plus_to_space: false)
 end

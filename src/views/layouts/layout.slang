@@ -33,8 +33,8 @@ html style="background-color: #f9f9fa;"
           - env.request.path.split('/', remove_empty: true).each do |part|
             - path += part + "/"
             i.fas.fa-slash.path-separator
-            a href=path
-              == HTML.escape(URI.decode_www_form part)
+            a href=path onclick="event.preventDefault();navigateContent('#{path}')"
+              == HTML.escape(URI.decode_www_form part, plus_to_space: false)
       #rightmenu
         a.item.tooltip.tooltip-bottom#download data-tooltip="Download cart" href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
           i.fas.fa-download

@@ -122,7 +122,7 @@ function generateBreadCrumb() {
       specialIcon.className = "fas fa-cart-arrow-down";
     }
     else {
-      special.setAttribute("data-tooltip", "Download Cart");
+      special.setAttribute("data-tooltip", "Download");
       specialIcon.className = "fas fa-download";
     }
     return special;
@@ -170,18 +170,15 @@ function navigateContent(path, pushState = true) {
   path = decodeURIComponent(path);
   if (path[0] !== '/')
     path = window.location.pathname + path
-  NProgress.start();
 
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
-    NProgress.inc();
 
     if(xhr.readyState === 4) {
       if (xhr.status >= 200 && xhr.status < 300) {
         if (pushState)
           history.pushState(null, null, path);
 
-        NProgress.done();
         document.getElementById('content').innerHTML = xhr.response;
       }
       else {
@@ -190,7 +187,6 @@ function navigateContent(path, pushState = true) {
       }
       scroll(0,0);
       generateBreadCrumb();
-      NProgress.done();
     }
   };
   xhr.open("GET", path);

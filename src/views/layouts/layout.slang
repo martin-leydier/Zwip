@@ -8,12 +8,11 @@ html style="background-color: #f9f9fa;"
     meta name="mobile-web-app-capable" content="yes"
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="apple-mobile-web-app-status-bar-style" content="black"
-    script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"
     link rel="stylesheet" href="/css/normalize.css"
     link rel="stylesheet" href="/css/fontawesome.css"
     link rel="stylesheet" href="/css/tooltips.css"
-    link rel="stylesheet" href="/css/new_site.css"
-    script src="/js/site.js?v=1.2"
+    link rel="stylesheet" href="/css/site.css?v=2.0"
+    script src="/js/site.js?v=2.0"
 
   body
     .header
@@ -26,7 +25,7 @@ html style="background-color: #f9f9fa;"
             i.fas.fa-cart-arrow-down
         - elsif env.request.path == "/.download"
           i.fas.fa-slash.path-separator
-          a.tooltip.tooltip-bottom href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download cart"
+          a.tooltip.tooltip-bottom href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download"
             i.fas.fa-download
         - else
           - path = "/"

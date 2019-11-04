@@ -45,7 +45,7 @@ function getCart() {
 
 function setCart(cartArray) {
   setCookie("cart", encodeURIComponent(JSON.stringify(cartArray)), 30);
-  $('#cart').textNodes().replaceWith(cartArray.length);
+  document.getElementById('cartCount').textContent = cartArray.length
 }
 
 function addCart(path) {

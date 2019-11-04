@@ -1,8 +1,10 @@
 #entries
   - if env.request.path != "/"
-    a href="#{env.request.path}.." onclick="event.preventDefault();navigateContent('#{URI.encode_www_form env.request.path}..')"
-      i.fas.fa-left-arrow
-      = env.request.path
+    .entry.tooltip.tooltip-bottom data-tooltip="Go back to parent directory"
+      a.highlightable.entry-link href="#{env.request.path}.." onclick="event.preventDefault();navigateContent('#{URI.encode_www_form env.request.path}..')"
+        i.fas.fa-arrow-left
+        .content
+          = get_prev_folder(env.request.path)
   - files.each do |file|
     - if file.directory?
       - lnk = "#{file.basename}/"

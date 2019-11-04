@@ -49,3 +49,10 @@ def build_dl(env)
     end
   end
 end
+
+def get_prev_folder(path)
+  path_split = path.split("/", remove_empty: true)
+  return "/" if path_split.size < 2
+
+  return URI.decode_www_form(path_split[-2])
+end

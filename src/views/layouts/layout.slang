@@ -38,9 +38,10 @@ html style="background-color: #f9f9fa;"
       #rightmenu
         a.item.tooltip.tooltip-bottom#download data-tooltip="Download cart" href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
           i.fas.fa-download
-        a.item.tooltip.tooltip-bottom#cart data-tooltip="Cart" href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
+        a.item.tooltip.tooltip-bottom data-tooltip="Cart" href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
           i.fas.fa-cart-arrow-down style="margin-right: .5rem;"
-          = get_cart(env).size
+          span#cartCount
+            = get_cart(env).size
         a.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
           img src="/images/logo.webp"
           | Zwip

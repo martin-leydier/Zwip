@@ -63,6 +63,12 @@ function removeFromCart(path, removeNode) {
   if (removeNode) {
       removeNode.remove();
   }
+  if (cartArray.length === 0) {
+    let empty = document.getElementById('emptyCart');
+    if (empty) {
+      empty.removeAttribute("hidden");
+    }
+  }
 }
 
 function clearCart() {
@@ -86,9 +92,12 @@ async function multiDownload() {
 }
 
 function generateBreadCrumb() {
-  function createPart(path, txt) {
+  function createSeparator() {
     let separator = document.createElement("i");
     separator.className = "fas fa-slash path-separator";
+    return separator;
+  }
+  function createPart(path, txt) {
     let lnk = document.createElement("a");
     lnk.href = path;
     lnk.textContent = txt;
@@ -96,7 +105,27 @@ function generateBreadCrumb() {
       event.preventDefault();
       navigateContent(path);
     }
-    return [separator, lnk]
+    return lnk
+  }
+  function createSpecial(path) {
+    let special = document.createElement("a");
+    special.className = "tooltip tooltip-bottom";
+    special.href = "/" + path;
+    special.onclick = function() {
+      event.preventDefault();
+      navigateContent("/" + path);
+    }
+    let specialIcon = document.createElement("i");
+    special.appendChild(specialIcon);
+    if (path === ".list") {
+      special.setAttribute("data-tooltip", "Cart");
+      specialIcon.className = "fas fa-cart-arrow-down";
+    }
+    else {
+      special.setAttribute("data-tooltip", "Download Cart");
+      specialIcon.className = "fas fa-download";
+    }
+    return special;
   }
   let breadcrumb_tree = document.createElement("div");
   breadcrumb_tree.id = "breadcrumb";
@@ -118,14 +147,20 @@ function generateBreadCrumb() {
   let curPathArray = window.location.pathname.split('/');
   let arrayLength = curPathArray.length;
   let path = "/";
-  // Skip first and last as they are empty
-  for (let i = 1; i < arrayLength - 1; i++) {
-    if (curPathArray[i] == "")
+  // Skip first as it is empty
+  for (let i = 1; i < arrayLength; i++) {
+    if (curPathArray[i] === "")
       continue;
-    path += curPathArray[i] + "/";
-    let breadcrumb_part = createPart(path, decodeURI(curPathArray[i]));
-    breadcrumb_tree.appendChild(breadcrumb_part[0]);
-    breadcrumb_tree.appendChild(breadcrumb_part[1]);
+    let breadcrumb_part;
+    if (curPathArray[i] === ".list" || curPathArray[i] === ".download") {
+      breadcrumb_part = createSpecial(curPathArray[i]);
+    }
+    else {
+      path += curPathArray[i] + "/";
+      breadcrumb_part = createPart(path, decodeURI(curPathArray[i]));
+    }
+    breadcrumb_tree.appendChild(createSeparator());
+    breadcrumb_tree.appendChild(breadcrumb_part);
   }
   let breadcrumb = document.getElementById('breadcrumb');
   breadcrumb.parentNode.replaceChild(breadcrumb_tree, breadcrumb);
@@ -162,7 +197,6 @@ function navigateContent(path, pushState = true) {
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
   xhr.send();
 }
-
 
 window.addEventListener("popstate", function(e) {
   navigateContent(location.pathname, false);

@@ -30,7 +30,7 @@ def get_cart(env) : Array(FileSystem::FileSystemEntry)
   if env.request.cookies["cart"]?
     begin
       cart_paths = Array(String).from_json(env.request.cookies["cart"].value)
-      return index_paths(cart_paths)
+      return index_paths(cart_paths, -1)
     rescue e : JSON::ParseException
       return [] of FileSystem::FileSystemEntry
     end

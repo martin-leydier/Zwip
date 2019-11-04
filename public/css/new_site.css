@@ -120,6 +120,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   overflow: hidden;
+  line-height: normal;
 }
 
 .entry-link > .content {
@@ -174,4 +175,53 @@ body {
   background-color: #ddd;
   font-size: small;
   font-weight: 500;
+}
+
+.danger:hover {
+  background-color: #b00;
+}
+
+.danger {
+  color: #eee;
+  background-color: #d00;
+}
+
+.double-slash {
+  transform: translateY(3px) translateX(-2px);
+  color: #f9f9f9;
+}
+
+.empty {
+  display: flex;
+  height: 12rem;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+  border-radius: 5px;
+  background-color: #f7f7f7;
+}
+
+.empty > .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+.empty > hr {
+  height: 75%;
+  width: 1px;
+  margin: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.spacer {
+  height: 2rem;
 }

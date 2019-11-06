@@ -1,12 +1,12 @@
 name: Zwip
-version: 0.1.0
+version: 0.3.0
 
 authors:
   - Martin Leydier <martin.leydier@gmail.com>
 
 targets:
   Zwip:
-    main: app.cr
+    main: src/zwip.cr
 
 crystal: 0.31.1
 

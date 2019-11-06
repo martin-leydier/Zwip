@@ -1,19 +1,23 @@
 def valid_path?(path : String)
   expanded_path = File.expand_path(path)
-  return false unless expanded_path.starts_with?(ENV["ROOT"])
-  request_path = expanded_path.lchop(ENV["ROOT"]).split('/', remove_empty: true)
+  return false unless expanded_path.starts_with?(Settings.root)
+  request_path = expanded_path.lchop(Settings.root).split('/', remove_empty: true)
   return true if request_path.size == 1 && ({".list", ".download", ".zip"}.any? request_path[0])
   return false if request_path.any? { |e| e[0] == '.' }
-  return true unless FileStorage.get?(expanded_path.lchop(ENV["ROOT"])).nil?
+  return true unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil?
   return File.exists? expanded_path
 end
 
+def log(message)
+  Kemal.config.logger.as(JsonLogHandler).write_json message.to_json
+end
+
 def full_path(path : String)
-  File.join(ENV["ROOT"], path)
+  File.join(Settings.root, path)
 end
 
 def full_path(env : HTTP::Server::Context)
-  File.join(ENV["ROOT"], URI.decode_www_form(env.request.path, plus_to_space: false))
+  File.join(Settings.root, URI.decode_www_form(env.request.path, plus_to_space: false))
 end
 
 def index_paths(paths : Array(String), depth = 0) : Array(FileSystem::FileSystemEntry)

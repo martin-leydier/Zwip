@@ -15,6 +15,8 @@ html style="background-color: #f9f9fa;"
     script src="/js/site.js?v=2.0"
 
   body
+    #loadingBar
+      .highlight
     .header
       #breadcrumb.item
         a.tooltip.tooltip-bottom href="/" onclick="event.preventDefault();navigateContent('/')" data-tooltip="Home"

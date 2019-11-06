@@ -249,3 +249,23 @@ body {
   border-radius: 3px;
   cursor: pointer;
 }
+
+#loadingBar {
+  height: 5px;
+  position: absolute;
+  z-index: 500;
+  width: 0%;
+  background-color: #f4f4f4;
+  transition: width 3s ease-out;
+}
+
+#loadingBar > .highlight {
+  height: 100%;
+  /* min-width: 20px; */
+  width: 40px;
+  background-color: #f4f4f4;
+  position: absolute;
+  right: 0px;
+  /* max-width: 40px; */
+  box-shadow: 1px 1px 18px 0px rgba(245,245,245,1);
+}

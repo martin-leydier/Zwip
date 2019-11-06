@@ -17,7 +17,7 @@ module FileSystem
       @icon = get_icon
       @size = @file_info.size
       @basename = File.basename(real_path)
-      @path = @real_path.lchop(ENV["ROOT"])
+      @path = @real_path.lchop(Settings.root)
       @path = File::SEPARATOR + @path if @path.empty? || @path[0] != File::SEPARATOR
     end
 

@@ -6,7 +6,7 @@ shards:
 	shards install
 
 run: shards
-	crystal app.cr
+	crystal src/zwip.cr
 
 dev/sentry.cr: shards
 	curl -fsSLo- https://raw.githubusercontent.com/samueleaton/sentry/master/install.cr | crystal eval

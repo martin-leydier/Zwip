@@ -179,7 +179,8 @@ function navigateContent(path, pushState = true) {
         if (pushState)
           history.pushState(null, null, path);
 
-        document.getElementById('content').innerHTML = xhr.response;
+        let content = document.getElementById('content')
+        content.parentNode.replaceChild(xhr.response.getElementById('content'), content);
       }
       else {
         console.error("Failed to load new page");
@@ -190,6 +191,7 @@ function navigateContent(path, pushState = true) {
     }
   };
   xhr.open("GET", path);
+  xhr.responseType = "document";
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
   xhr.send();
 }

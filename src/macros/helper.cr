@@ -6,10 +6,6 @@ macro view(path, env = nil)
   {% if path.split("/").last.starts_with?('_') %}
     render "#{__DIR__}/views/#{{{path}}}.slang"
   {% else %}
-    if env.request.headers["X-Requested-With"]? == "XMLHttpRequest"
-      render "#{__DIR__}/views/#{{{path}}}.slang"
-    else
-      render "#{__DIR__}/views/#{{{path}}}.slang", "#{__DIR__}/views/layouts/layout.slang"
-    end
+    render "#{__DIR__}/views/#{{{path}}}.slang", "#{__DIR__}/views/layouts/layout.slang"
   {% end %}
 end

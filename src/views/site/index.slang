@@ -24,7 +24,7 @@
           .size-badge
             = file.size.humanize_bytes
       .entry-buttons
-        a.entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Download entry" href="/.zip?files=#{URI.encode_www_form file.path, space_to_plus: false}"
+        a.entry-button.highlightable.tooltip.tooltip-bottom download="" data-tooltip="Download entry" href="/.zip?files=#{URI.encode_www_form file.path, space_to_plus: false}"
           i.fas.fa-download
         .entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Add to cart" onclick="event.preventDefault();addCart('#{URI.encode_www_form file.path, space_to_plus: false}');"
           i.fas.fa-cart-plus

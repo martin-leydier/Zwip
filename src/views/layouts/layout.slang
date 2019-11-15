@@ -10,9 +10,9 @@ html style="background-color: #f9f9fa;"
     meta name="apple-mobile-web-app-status-bar-style" content="black"
     link rel="stylesheet" href="/css/normalize.css"
     link rel="stylesheet" href="/css/fontawesome.css"
-    link rel="stylesheet" href="/css/tooltips.css"
-    link rel="stylesheet" href="/css/site.css?v=2.0"
-    script src="/js/site.js?v=2.0"
+    link rel="stylesheet" href="/css/tooltips.css?v=2.1"
+    link rel="stylesheet" href="/css/site.css?v=2.1"
+    script src="/js/site.js?v=2.1"
 
   body
     .header

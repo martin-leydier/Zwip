@@ -14,10 +14,15 @@ body {
   width: 100%;
   height: 3.75rem;
   background-color: #111;
+  display: -webkit-box;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
 }
 
 #rightmenu {
@@ -32,7 +37,8 @@ body {
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   overflow-x: auto;
   overflow-y: hidden;
-  justify-content: left;
+  -webkit-box-pack: left;
+          justify-content: left;
 }
 
 #breadcrumb > a:last-child {
@@ -58,22 +64,27 @@ body {
 
 .path-separator {
   color: #eee;
-  transform: rotate(75deg);
+  -webkit-transform: rotate(75deg);
+          transform: rotate(75deg);
   font-size: smaller;
 }
 
 .header .item {
   height: 100%;
+  display: -webkit-box;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
 .header a {
   color: #eee;
-  text-decoration-line: none;
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
   font-weight: 500;
 }
 
@@ -105,18 +116,26 @@ body {
 .entry {
   min-height: 2.7rem;
   max-height: 10rem;
+  display: -webkit-box;
   display: flex;
   max-width: 100%;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  -webkit-box-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
 }
 
 .entry-link {
   width: 100%;
+  display: -webkit-box;
   display: flex;
-  align-items: center;
-  justify-content: left;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: left;
+          justify-content: left;
   padding: .25rem 1rem;
   color: #111;
   font-weight: 600;
@@ -139,22 +158,26 @@ body {
 }
 
 .highlightable:hover {
-  -webkit-box-shadow: 0 2px 4px 0 rgba(34,36,38,.12), 0 2px 10px 0 rgba(34,36,38,.15);
   box-shadow: 0 2px 4px 0 rgba(34,36,38,.12), 0 2px 10px 0 rgba(34,36,38,.15);
 }
 
 .entry-buttons {
+  display: -webkit-box;
   display: flex;
-  align-items: stretch;
+  -webkit-box-align: stretch;
+          align-items: stretch;
 }
 
 .entry-button {
   width: 3rem;
+  display: -webkit-box;
   display: flex;
-  align-items: stretch;
+  -webkit-box-align: stretch;
+          align-items: stretch;
   align-content: center;
   position: relative;
-  justify-content: center;
+  -webkit-box-pack: center;
+          justify-content: center;
   color: #111;
   cursor: pointer;
 }
@@ -191,28 +214,36 @@ body {
 }
 
 .double-slash {
-  transform: translateY(6px) translateX(-2px);
+  -webkit-transform: translateY(6px) translateX(-2px);
+          transform: translateY(6px) translateX(-2px);
   color: #f9f9f9;
 }
 
 .empty {
+  display: -webkit-box;
   display: flex;
   height: 12rem;
-  flex-direction: row;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
   align-content: center;
-  align-items: center;
-  justify-content: space-evenly;
-  -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: space-evenly;
+          justify-content: space-evenly;
   box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
   border-radius: 5px;
   background-color: #f7f7f7;
 }
 
 .empty > .content {
+  display: -webkit-box;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  -webkit-box-align: center;
+          align-items: center;
   padding-top: 2rem;
   padding-bottom: 2rem;
   position: relative;

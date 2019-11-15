@@ -171,6 +171,9 @@ function navigateContent(path, pushState = true) {
   if (path[0] !== '/')
     path = window.location.pathname + path
 
+  let header = document.querySelector('body > .header');
+  header.classList.toggle('loading');
+
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
 
@@ -186,6 +189,7 @@ function navigateContent(path, pushState = true) {
         console.error("Failed to load new page");
         console.error(xhr);
       }
+      header.classList.toggle('loading');
       scroll(0,0);
       generateBreadCrumb();
     }

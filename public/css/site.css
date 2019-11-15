@@ -280,3 +280,37 @@ body {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.loading {
+  position: relative;
+}
+
+.header.loading::after {
+    bottom: auto;
+    top: 100%;
+    opacity: 1;
+}
+
+.header::after {
+    background: rgba(26, 26, 26, .95);
+    border-radius: .1rem;
+    bottom: 100%;
+    color: #fff;
+    content: "Loading...";
+    display: block;
+    font-size: .7rem;
+    left: 50%;
+    max-width: 320px;
+    opacity: 0;
+    overflow: hidden;
+    padding: .2rem .4rem;
+    pointer-events: none;
+    position: absolute;
+    text-overflow: ellipsis;
+    -webkit-transform: translate(-50%, .4rem);
+    transform: translate(-50%, .4rem);
+    -webkit-transition: opacity .2s, -webkit-transform .2s;
+    transition: opacity .2s, transform .2s;
+    white-space: pre;
+    z-index: 300;
+}

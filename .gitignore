@@ -4,3 +4,5 @@ sentry
 dev/sentry.cr
 dev/sentry_cli.cr
 .tags*
+.travis.yml
+README.md

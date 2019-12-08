@@ -1,8 +1,9 @@
+require "kemal"
+require "kilt/slang"
 require "html"
 
-require "./app/helper.cr"
-require "./app/filesystem.cr"
-require "./app/file_storage.cr"
+require "./app/*"
+require "./macros/*"
 
 before_get do |env|
   request_path = full_path env
@@ -28,7 +29,8 @@ get "/.zip" do |env|
     end
     env.response.content_type = "application/zip"
     env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
-    Process.run(command: ZIP_PATH, args: args, clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: ENV["ROOT"])
+    log({action: "Download started", files: indexed.map { |e| e.path }})
+    Process.run(command: Settings.zip_path, args: args, clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: Settings.root)
   else
     env.redirect "/.download"
   end
@@ -41,7 +43,7 @@ get "/.list" do |env|
 end
 
 get "/" do |env|
-  files = FileSystem.index(ENV["ROOT"]).as(FileSystem::FileSystemDirectory)
+  files = FileSystem.index(Settings.root).as(FileSystem::FileSystemDirectory)
   view("site/index", env)
 end
 
@@ -61,3 +63,5 @@ FileStorage.files.each do |file|
     FileStorage.serve(file, env)
   end
 end
+
+Kemal.run

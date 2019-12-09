@@ -24,11 +24,11 @@ class JsonLogHandler < Kemal::BaseLogHandler
     @io << "\"http_method\":\"" << context.request.method << "\","
     @io << "\"http_uri_path\":" << context.request.resource.to_json << ","
     @io << "\"request_milliseconds\":" << elapsed.total_milliseconds << ","
-    @io << "\"headers\":["
+    @io << "\"headers\":{"
     @log_headers.join(",", @io) do |header, io|
       io << header.to_json << ":" << context.request.headers.fetch(header, "").to_json
     end
-    @io << "]}\n"
+    @io << "}}\n"
     @io.flush
     context
   end

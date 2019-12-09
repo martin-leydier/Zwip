@@ -23,6 +23,7 @@ class Config
 
   def self.load : Config
     settings = File.open("config.json") { |f| Config.from_json f }
+    settings.port = ENV.fetch("PORT", settings.port.to_s).to_i
     settings.root = ENV.fetch("ROOT", settings.root)
     settings.root = File.expand_path settings.root
     if settings.zip_path.empty? || !File.exists?(settings.zip_path)

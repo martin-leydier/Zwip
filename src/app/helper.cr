@@ -8,8 +8,8 @@ def valid_path?(path : String)
   return File.exists? expanded_path
 end
 
-def log(message)
-  Kemal.config.logger.as(JsonLogHandler).write_json message.to_json
+def log(message, env : HTTP::Server::Context? = nil)
+  Kemal.config.logger.as(JsonLogHandler).write_json message.to_json, env
 end
 
 def full_path(path : String)

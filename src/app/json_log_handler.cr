@@ -5,30 +5,12 @@ class JsonLogHandler < Kemal::BaseLogHandler
     @log_headers = Settings.log_headers
   end
 
-  private def request_ip(request) : String
-    if Settings.trust_forwarded?
-      ff_hdr = request.headers.fetch("X-Forwarded-For", nil)
-      return ff_hdr.split(',')[0] unless ff_hdr.nil?
-    end
-    ip_port = request.remote_address
-    return "unknown" if ip_port.nil?
-
-    return ip_port.split(':')[0]
-  end
-
   def call(context : HTTP::Server::Context)
     elapsed = Time.measure { call_next(context) }
     @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\","
-    @io << "\"src_ip\":\"" << request_ip(context.request) << "\","
-    @io << "\"http_status\":" << context.response.status_code << ","
-    @io << "\"http_method\":\"" << context.request.method << "\","
-    @io << "\"http_uri_path\":" << context.request.resource.to_json << ","
-    @io << "\"request_milliseconds\":" << elapsed.total_milliseconds << ","
-    @io << "\"headers\":{"
-    @log_headers.join(",", @io) do |header, io|
-      io << header.to_json << ":" << context.request.headers.fetch(header, "").to_json
-    end
-    @io << "}}\n"
+    log_http_context context
+    @io << ",\"http_status\":" << context.response.status_code << ","
+    @io << "\"request_milliseconds\":" << elapsed.total_milliseconds << "}\n"
     @io.flush
     context
   end
@@ -39,8 +21,39 @@ class JsonLogHandler < Kemal::BaseLogHandler
     @io.flush
   end
 
-  def write_json(message : String)
-    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message << "}\n"
+  # Used by zwip's log() helper function
+  def write_json(message : String, context : HTTP::Server::Context? = nil)
+    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message << ","
+    log_http_context context unless context.nil?
+    @io << "}\n"
     @io.flush
+  end
+
+  # Tries to guess the request client's IP, based on headers & request address
+  # does not trust headers unless specified in Settings
+  private def request_ip(request) : String
+    if Settings.trust_forwarded?
+      hdr = request.headers.fetch("X-Real-Ip", nil)
+      return hdr unless hdr.nil?
+
+      hdr = request.headers.fetch("X-Forwarded-For", nil)
+      return hdr.split(',')[0] unless hdr.nil?
+    end
+    ip_port = request.remote_address
+    return "unknown" if ip_port.nil?
+
+    return ip_port.split(':')[0]
+  end
+
+  # Log misc http values
+  private def log_http_context(env : HTTP::Server::Context)
+    @io << "\"src_ip\":\"" << request_ip(env.request) << "\","
+    @io << "\"http_method\":\"" << env.request.method << "\","
+    @io << "\"http_uri_path\":" << env.request.resource.to_json << ","
+    @io << "\"headers\":{"
+    @log_headers.join(",", @io) do |header, io|
+      io << header.to_json << ":" << env.request.headers.fetch(header, "").to_json
+    end
+    @io << "}"
   end
 end

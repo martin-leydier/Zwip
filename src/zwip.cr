@@ -20,6 +20,7 @@ end
 get "/.zip" do |env|
   files = env.params.query["files"].split(',', remove_empty: true)
   indexed = index_paths(files, -1)
+  log({action: "Download started", files: indexed.map { |e| e.path }}, env)
   if indexed.size == 1 && !indexed[0].directory?
     send_file env, indexed[0].real_path, filename: indexed[0].basename, disposition: "attachment"
   elsif indexed.size > 0
@@ -29,7 +30,6 @@ get "/.zip" do |env|
     end
     env.response.content_type = "application/zip"
     env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
-    log({action: "Download started", files: indexed.map { |e| e.path }})
     Process.run(command: Settings.zip_path, args: args, clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: Settings.root)
   else
     env.redirect "/.download"

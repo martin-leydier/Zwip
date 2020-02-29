@@ -46,7 +46,7 @@ def build_dl(env)
   cart = get_cart(env)
   String.build do |io|
     io << "/.zip?files="
-    cart.join(",", io) do |item, join_io|
+    cart.join("&files=", io) do |item, join_io|
       URI.encode_www_form(item.path, join_io, space_to_plus: false)
     end
     cart.each do |item|

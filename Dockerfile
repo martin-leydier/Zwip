@@ -1,10 +1,10 @@
 # App build
-FROM alpine:edge AS build
+FROM crystallang/crystal:0.33.0-alpine AS build
 
 WORKDIR /build
 # compile su-exec, linked statically
 # mailcap provides mime types
-RUN apk add gcc musl-dev git zlib-static zlib-dev openssl-libs-static openssl-dev build-base wget libevent libevent-dev libevent-static yaml-dev crystal shards mailcap && \
+RUN apk add gcc musl-dev git zlib-static zlib-dev openssl-libs-static openssl-dev build-base wget libevent libevent-dev libevent-static yaml-dev mailcap && \
     git clone --depth 1 https://github.com/ncopa/su-exec.git && \
     cd su-exec && \
     make su-exec-static && \

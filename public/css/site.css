@@ -214,8 +214,8 @@ body {
 }
 
 .double-slash {
-  -webkit-transform: translateY(6px) translateX(-2px);
-          transform: translateY(6px) translateX(-2px);
+  -webkit-transform: translateY(.25rem) translateX(-.25rem);
+          transform: translateY(.25rem) translateX(-.25rem);
   color: #f9f9f9;
 }
 

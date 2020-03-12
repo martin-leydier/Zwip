@@ -16,7 +16,7 @@ A demo is running over there: https://zwip.herokuapp.com/
 
 ## Requirements
 
-* [Crystal](https://crystal-lang.org/) 0.29.0
+* [Crystal](https://crystal-lang.org/) 0.33.0
 * zip(1) (Crystal does not suport Zip64 yet)
 
 ## Running

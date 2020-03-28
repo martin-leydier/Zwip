@@ -18,7 +18,7 @@
             = file.basename
       - else
         .entry-link
-          i.fas.fa-file
+          i.fas class=file.icon
           .content
             = file.basename
           .size-badge

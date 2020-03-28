@@ -9,9 +9,10 @@ html style="background-color: #f9f9fa;"
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="apple-mobile-web-app-status-bar-style" content="black"
     link rel="stylesheet" href="/css/normalize.css"
-    link rel="stylesheet" href="/css/fontawesome.css"
+    link rel="stylesheet" href="/css/fontawesome.css?v=2.2"
     link rel="stylesheet" href="/css/tooltips.css?v=2.1"
-    link rel="stylesheet" href="/css/site.css?v=2.1"
+    link rel="stylesheet" href="/css/site.css?v=2.2"
+    link rel="shortcut icon" href="/favicon.ico"
     script src="/js/site.js?v=2.1"
 
   body
@@ -41,7 +42,7 @@ html style="background-color: #f9f9fa;"
           i.fas.fa-cart-arrow-down style="margin-right: .5rem;"
           span#cartCount
             = get_cart(env).size
-        a.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
+        a.hide-sm.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"
           img src="/images/logo.webp"
           | Zwip
 

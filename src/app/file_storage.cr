@@ -8,7 +8,7 @@ class FileStorage
     req = ctx.request
     resp = ctx.response
     resp.status_code = 200
-    resp.content_type = MIME.from_filename?(file.path) || "text/html"
+    resp.content_type = MIME.from_filename(file.path, "text/html")
     last_modified = START_TIME
     add_cache_headers(resp.headers, START_TIME)
     if cache_request?(ctx, START_TIME)
@@ -29,7 +29,7 @@ class FileStorage
   private def self.add_cache_headers(response_headers : HTTP::Headers, last_modified : Time) : Nil
     response_headers["Etag"] = etag(last_modified)
     response_headers["Last-Modified"] = HTTP.format_time(last_modified)
-    response_headers["Cache-Control"] = "max-age=31536000"
+    response_headers["Cache-Control"] = "public,max-age=31536000"
   end
 
   # Function from crystal's HTTP::StaticFileHandler

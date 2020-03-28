@@ -45,3 +45,5 @@ Kemal.config.logger = JsonLogHandler.new Settings.log_path
 Kemal.config.shutdown_message = false
 Kemal.config.port = Settings.port
 Kemal.config.env = Settings.kemal_env
+serve_static false
+MIME.register ".ico", "image/x-icon" # only really needed for the favicon

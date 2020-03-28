@@ -39,20 +39,18 @@ module FileSystem
 
     private def get_icon
       case
-      when @file_info.directory?
-        return "folder"
       when @mime.nil?
-        return "file"
+        return "fa-file"
       when @mime.starts_with? "video"
-        return "file video"
+        return "fa-file-video"
       when @mime.starts_with? "audio"
-        return "file audio"
+        return "fa-file-audio"
       when @mime.starts_with? "image"
-        return "file image"
+        return "fa-file-image"
       when @mime.starts_with? "text"
-        return "file alternate"
+        return "fa-file-alt"
       else
-        return "file"
+        return "fa-file"
       end
     end
   end
@@ -89,6 +87,10 @@ module FileSystem
 
     def directory?
       true
+    end
+
+    private def get_icon
+      "fa-folder"
     end
   end
 

@@ -4,6 +4,6 @@ sentry = Sentry::ProcessRunner.new(
   display_name: "Zwip",
   build_command: "crystal build ./src/zwip.cr -o ./bin/zwip",
   run_command: "./bin/zwip",
-  files: ["./*.cr", "./src/**/*.cr", "./src/**/*.slang"]
+  files: ["./*.cr", "./src/**/*.cr", "./src/**/*.slang", "./public/**/*"]
 )
 sentry.run

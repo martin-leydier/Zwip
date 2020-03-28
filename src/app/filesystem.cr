@@ -13,7 +13,7 @@ module FileSystem
     getter path : String
 
     def initialize(@real_path : String, @file_info : File::Info)
-      @mime = MIME.from_filename(@real_path, "text/plain")
+      @mime = MIME.from_filename(@real_path, "application/octet-stream")
       @icon = get_icon
       @size = @file_info.size
       @basename = File.basename(real_path)

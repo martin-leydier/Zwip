@@ -24,7 +24,7 @@ get "/.zip" do |env|
   if indexed.size == 1 && !indexed[0].directory?
     send_file env, indexed[0].real_path, filename: indexed[0].basename, disposition: "attachment"
   elsif indexed.size > 0
-    args = ["-", "-r", "-0", "--"]
+    args = ["-", "-y", "-r", "-0", "--"]
     indexed.each do |i|
       args << ".#{i.path}"
     end

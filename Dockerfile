@@ -24,15 +24,15 @@ RUN make release_static
 FROM scratch
 
 EXPOSE 3000/tcp
-ENV UID=1014 GID=1014 PATH="/sbin" ROOT="/var/www/" KEMAL_ENV=production
+ENV UID=1014 GID=1014 PATH="/usr/bin" ROOT="/var/www/" KEMAL_ENV=production
 
 COPY busybox /bin/busybox
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/bin/busybox", "sh", "/entrypoint.sh"]
 
-COPY --from=build /build/su-exec/su-exec-static /sbin/su-exec
-COPY --from=build /build/zip30/zip /sbin/zip
+COPY --from=build /build/su-exec/su-exec-static /usr/bin/su-exec
+COPY --from=build /build/zip30/zip /usr/bin/zip
 COPY --from=build /zwip/bin/Zwip /Zwip
 COPY --from=build /zwip/config.json /config.json
 COPY --from=build /etc/mime.types /etc/mime.types

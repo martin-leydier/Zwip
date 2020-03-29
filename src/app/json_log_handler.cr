@@ -1,7 +1,7 @@
 class JsonLogHandler < Kemal::BaseLogHandler
   @log_headers : Array(String)
 
-  def initialize(@io : IO = STDOUT)
+  def initialize(@io : IO::FileDescriptor = STDOUT)
     @log_headers = Settings.log_headers
   end
 
@@ -45,6 +45,17 @@ class JsonLogHandler < Kemal::BaseLogHandler
     return ip_port.split(':')[0]
   end
 
+  # reopen log file
+  def reopen
+    log_path = Settings.log_path
+    if log_path.responds_to? :path
+      path = log_path.path
+      return unless path
+      new_io = File.open path, "a"
+      @io.reopen(new_io)
+    end
+  end
+
   # Log misc http values
   private def log_http_context(env : HTTP::Server::Context)
     @io << "\"src_ip\":\"" << request_ip(env.request) << "\","
@@ -56,4 +67,8 @@ class JsonLogHandler < Kemal::BaseLogHandler
     end
     @io << "}"
   end
+end
+
+Signal::USR1.trap do
+  Kemal.config.logger.as(JsonLogHandler).reopen
 end

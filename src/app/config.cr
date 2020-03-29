@@ -15,7 +15,7 @@ class Config
     root: {type: String, default: "/var/www"},
     port: {type: Int32, default: 3000},
     zip_path: {type: String, default: ""},
-    log_path: {type: IO, default: STDOUT, converter: IOConverter},
+    log_path: {type: IO::FileDescriptor, default: STDOUT, converter: IOConverter},
     trust_headers_ip?: {type: Bool, default: false},
     log_headers: {type: Array(String), default: [] of String},
     kemal_env: {type: String, default: "production"}

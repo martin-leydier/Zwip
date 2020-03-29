@@ -32,7 +32,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
   # Tries to guess the request client's IP, based on headers & request address
   # does not trust headers unless specified in Settings
   private def request_ip(request) : String
-    if Settings.trust_headers_ip?
+    if Settings.trust_headers_ip
       hdr = request.headers.fetch("X-Real-Ip", nil)
       return hdr unless hdr.nil?
 

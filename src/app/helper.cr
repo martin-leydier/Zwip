@@ -1,11 +1,20 @@
+def info_path(path)
+  path = path.chomp "/"
+  return "/" if path.empty?
+  return path
+end
+
 def valid_path?(path : String)
-  expanded_path = File.expand_path(path)
-  return false unless expanded_path.starts_with?(Settings.root)
+  expanded_path = File.expand_path path
+  return false unless expanded_path.starts_with?(Settings.root) # path cannot be outside of root
   request_path = expanded_path.lchop(Settings.root).split('/', remove_empty: true)
-  return true if request_path.size == 1 && ({".list", ".download", ".zip"}.any? request_path[0])
-  return false if request_path.any? { |e| e[0] == '.' }
-  return true unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil?
-  return File.exists? expanded_path
+  return true if request_path.size == 1 && ({".list", ".download", ".zip"}.any? request_path[0]) # path is can be a reserved path
+  return false if request_path.any? { |e| e[0] == '.' }                                          # path is cannot be a hidden file/folder
+  return true unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil?                   # path is can be a public resource
+  real_path = File.real_path expanded_path
+  return false if expanded_path.chomp("/") != real_path.chomp("/") # path cannot contain symlinks
+  info = File.info?(info_path(expanded_path), false)
+  return info && (info.directory? || info.file?) # path should be either a file or a dir
 end
 
 def log(message, env : HTTP::Server::Context? = nil)

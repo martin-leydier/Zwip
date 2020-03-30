@@ -95,16 +95,24 @@ module FileSystem
   end
 
   def index(path, depth = 1, file_info = nil)
-    file_info = File.info(path, false) if file_info.nil?
+    fs = recursive_index(path, depth, file_info)
+    return fs unless fs.nil?
+    raise "Failed to index path"
+  end
+
+  private def recursive_index(path, depth = 1, file_info = nil)
+    file_info = File.info(info_path(path), false) if file_info.nil?
+    this = nil
     if file_info.directory?
       this = FileSystemDirectory.new(path, file_info)
       if depth != 0
         sorted_indexable(Dir.children(path), path).each do |child, child_info|
-          indexed = index(child, depth - 1, child_info)
+          indexed = recursive_index(child, depth - 1, child_info)
+          next if indexed.nil?
           this.add_entry indexed
         end
       end
-    else
+    elsif file_info.file?
       this = FileSystemEntry.new(path, file_info)
     end
     return this
@@ -116,7 +124,8 @@ module FileSystem
       next if e[0] == '.'
       full_path = File.join(base_path, e)
       next unless File.readable? full_path
-      info = File.info(full_path, false)
+      info = File.info(info_path(full_path), false)
+      next if !info.directory? && !info.file?
       visible << {full_path, info}
     end
     return visible.sort { |a, b| dir_sort(a[0], b[0], a[1], b[1]) }

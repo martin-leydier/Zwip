@@ -54,7 +54,7 @@ get "/*" do |env|
   if files.is_a? FileSystem::FileSystemDirectory
     view("site/index", env)
   else
-    send_file env, files.real_path
+    send_file env, files.real_path, filename: files.basename, disposition: "attachment"
   end
 end
 

@@ -1,5 +1,5 @@
 # App build
-FROM crystallang/crystal:0.33.0-alpine AS build
+FROM crystallang/crystal:0.34.0-alpine AS build
 
 WORKDIR /build
 # compile su-exec, linked statically

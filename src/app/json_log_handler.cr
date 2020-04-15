@@ -23,8 +23,11 @@ class JsonLogHandler < Kemal::BaseLogHandler
 
   # Used by zwip's log() helper function
   def write_json(message : String, context : HTTP::Server::Context? = nil)
-    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message << ","
-    log_http_context context unless context.nil?
+    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message
+    unless context.nil?
+      @io << ","
+      log_http_context context
+    end
     @io << "}\n"
     @io.flush
   end
@@ -53,6 +56,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
       return unless path
       new_io = File.open path, "a"
       @io.reopen(new_io)
+      write_json({action: "Log file re-opened", path: path}.to_json)
     end
   end
 

@@ -11,23 +11,26 @@ html style="background-color: #f9f9fa;"
     link rel="stylesheet" href="/css/normalize.css"
     link rel="stylesheet" href="/css/fontawesome.css?v=2.2"
     link rel="stylesheet" href="/css/tooltips.css?v=2.1"
-    link rel="stylesheet" href="/css/site.css?v=2.2"
+    link rel="stylesheet" href="/css/site.css?v=2.31"
     link rel="shortcut icon" href="/favicon.ico"
-    script src="/js/site.js?v=2.1"
+    script src="/js/site.js?v=2.31"
 
   body
     .header
       #breadcrumb.item
-        a.tooltip.tooltip-bottom href="/" onclick="event.preventDefault();navigateContent('/')" data-tooltip="Home"
-          i.fas.fa-home
+        a.header-inline-icon href="/" onclick="event.preventDefault();navigateContent('/')" data-tooltip="Home"
+          i.fas.fa-home.larger-icon
+          span.pl Home
         - if env.request.path == "/.list"
           i.fas.fa-slash.path-separator
-          a.tooltip.tooltip-bottom href="/.list" onclick="event.preventDefault();navigateContent('/.cart')" data-tooltip="Cart"
-            i.fas.fa-cart-arrow-down
+          a.header-inline-icon href="/.list" onclick="event.preventDefault();navigateContent('/.cart')" data-tooltip="Cart"
+            i.fas.fa-cart-arrow-down.larger-icon
+            span.pl Cart
         - elsif env.request.path == "/.download"
           i.fas.fa-slash.path-separator
-          a.tooltip.tooltip-bottom href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download"
-            i.fas.fa-download
+          a.header-inline-icon href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download"
+            i.fas.fa-download.larger-icon
+            span.pl Download
         - else
           - path = "/"
           - env.request.path.split('/', remove_empty: true).each do |part|

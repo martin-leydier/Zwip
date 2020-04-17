@@ -109,21 +109,24 @@ function generateBreadCrumb() {
   }
   function createSpecial(path) {
     let special = document.createElement("a");
-    special.className = "tooltip tooltip-bottom";
+    special.className = "header-inline-icon";
     special.href = "/" + path;
     special.onclick = function() {
       event.preventDefault();
       navigateContent("/" + path);
     }
+    let specialText = document.createElement("span");
+    specialText.className = "pl";
+    special.appendChild(specialText);
     let specialIcon = document.createElement("i");
     special.appendChild(specialIcon);
     if (path === ".list") {
-      special.setAttribute("data-tooltip", "Cart");
-      specialIcon.className = "fas fa-cart-arrow-down";
+      specialIcon.className = "fas fa-cart-arrow-down larger-icon";
+      specialText.textContent = "Cart";
     }
     else {
-      special.setAttribute("data-tooltip", "Download");
-      specialIcon.className = "fas fa-download";
+      specialIcon.className = "fas fa-download larger-icon";
+      specialText.textContent = "Download";
     }
     return special;
   }
@@ -132,16 +135,19 @@ function generateBreadCrumb() {
   breadcrumb_tree.className = "item";
 
   let home = document.createElement("a");
-  home.className = "tooltip tooltip-bottom";
+  home.className = "header-inline-icon";
   home.href = "/";
   home.onclick = function() {
     event.preventDefault();
     navigateContent("/");
   }
-  home.setAttribute("data-tooltip", "Home");
   let homeIcon = document.createElement("i");
-  homeIcon.className = "fas fa-home";
+  homeIcon.className = "fas fa-home larger-icon";
   home.appendChild(homeIcon);
+  let homeText = document.createElement("span");
+  homeText.className = "pl";
+  homeText.textContent = "Home";
+  home.appendChild(homeText);
   breadcrumb_tree.appendChild(home)
 
   let curPathArray = window.location.pathname.split('/');

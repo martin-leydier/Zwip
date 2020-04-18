@@ -115,11 +115,11 @@ function generateBreadCrumb() {
       event.preventDefault();
       navigateContent("/" + path);
     }
+    let specialIcon = document.createElement("i");
+    special.appendChild(specialIcon);
     let specialText = document.createElement("span");
     specialText.className = "pl";
     special.appendChild(specialText);
-    let specialIcon = document.createElement("i");
-    special.appendChild(specialIcon);
     if (path === ".list") {
       specialIcon.className = "fas fa-cart-arrow-down larger-icon";
       specialText.textContent = "Cart";

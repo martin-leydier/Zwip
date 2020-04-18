@@ -13,7 +13,7 @@ html style="background-color: #f9f9fa;"
     link rel="stylesheet" href="/css/tooltips.css?v=2.1"
     link rel="stylesheet" href="/css/site.css?v=2.31"
     link rel="shortcut icon" href="/favicon.ico"
-    script src="/js/site.js?v=2.31"
+    script src="/js/site.js?v=2.32"
 
   body
     .header

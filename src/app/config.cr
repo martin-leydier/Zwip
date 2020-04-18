@@ -22,7 +22,26 @@ class Config
   )
 
   def self.load : Config
-    settings = File.open("config.json") { |f| Config.from_json f }
+    settings_path = ""
+
+    OptionParser.parse do |parser|
+      parser.banner = "Usage: #{PROGRAM_NAME} [options]"
+      parser.on "-h", "--help", "Show this help" do
+        puts parser
+        exit
+      end
+      parser.on "-c PATH", "--config=PATH", "Set config file path" do |path|
+        settings_path = path
+      end
+    end
+    if settings_path.empty?
+      settings_path = File.join(File.dirname(PROGRAM_NAME), "config.json")
+    end
+    if !File.exists?(settings_path) || !File.readable?(settings_path)
+      abort "No settings file found, or it was unreadable (looked for: #{settings_path})"
+    end
+
+    settings = File.open(settings_path) { |f| Config.from_json f }
     settings.port = ENV.fetch("PORT", settings.port.to_s).to_i
     settings.root = ENV.fetch("ROOT", settings.root)
     settings.root = File.real_path(File.expand_path(settings.root))

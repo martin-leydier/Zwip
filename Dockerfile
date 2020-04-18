@@ -24,9 +24,10 @@ RUN make release_static
 FROM scratch
 
 EXPOSE 3000/tcp
-ENV UID=1014 GID=1014 PATH="/usr/bin" ROOT="/var/www/" KEMAL_ENV=production
+ENV UID=1014 GID=1014 PATH="/usr/bin" KEMAL_ENV=production
 
 COPY busybox /bin/busybox
+RUN ["/bin/busybox", "mkdir", "-p", "/var/www", "/var/log/Zwip"]
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/bin/busybox", "sh", "/entrypoint.sh"]

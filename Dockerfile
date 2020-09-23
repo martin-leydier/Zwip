@@ -21,16 +21,15 @@ WORKDIR /zwip
 RUN make release_static
 
 # Final container
-FROM scratch
+FROM busybox:latest
 
 EXPOSE 3000/tcp
 ENV UID=1014 GID=1014 PATH="/usr/bin" KEMAL_ENV=production
 
-COPY busybox /bin/busybox
-RUN ["/bin/busybox", "mkdir", "-p", "/var/www", "/var/log/Zwip"]
+RUN ["/bin/mkdir", "-p", "/var/www", "/var/log/Zwip"]
 COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/bin/busybox", "sh", "/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
 
 COPY --from=build /build/su-exec/su-exec-static /usr/bin/su-exec
 COPY --from=build /build/zip30/zip /usr/bin/zip

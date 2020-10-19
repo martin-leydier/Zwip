@@ -33,7 +33,7 @@ Here is a quick recap of each configuration option:
 
 #### log_path
 - string or null
-- Path to to a file Zwip will log incoming requests and actions to. If it is empty, Zwip will log to STDOUT
+- Path to a file Zwip will log incoming requests and actions to. If it is empty, Zwip will log to STDOUT
 
 #### trust_headers_ip
 - boolean

@@ -139,7 +139,7 @@ module FileSystem
   # ```
   # Hello(dir) < A(file)
   # hello(dir) < Hello(file)
-  # Hello(file) == hello(file)
+  # Hello(file) < hello(file)
   # ```
   #
   # if a file_info_x argument is nil, then its corresponding path_x must be an absolute path or relative path,

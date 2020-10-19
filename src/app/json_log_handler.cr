@@ -43,16 +43,16 @@ class JsonLogHandler < Kemal::BaseLogHandler
       return hdr.split(',')[0] unless hdr.nil?
     end
     ip_port = request.remote_address
-    return "unknown" if ip_port.nil?
+    return "unknown" if ip_port.nil? || !ip_port.responds_to? :address
 
-    return ip_port.split(':')[0]
+    return ip_port.address
   end
 
   # reopen log file
   def reopen
-    log_path = Settings.log_path
-    if log_path.responds_to? :path
-      path = log_path.path
+    log = Settings.log
+    if log.responds_to? :path
+      path = log.path
       return unless path
       new_io = File.open path, "a"
       @io.reopen(new_io)
@@ -66,7 +66,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
     @io << "\"http_method\":\"" << env.request.method << "\","
     @io << "\"http_uri_path\":" << env.request.resource.to_json << ","
     @io << "\"headers\":{"
-    @log_headers.join(",", @io) do |header, io|
+    @log_headers.join(@io, ",") do |header, io|
       io << header.to_json << ":" << env.request.headers.fetch(header, "").to_json
     end
     @io << "}"

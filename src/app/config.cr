@@ -11,15 +11,19 @@ class IOConverter
 end
 
 class Config
-  JSON.mapping(
-    root: {type: String, default: "/var/www"},
-    port: {type: Int32, default: 3000},
-    zip_path: {type: String, default: ""},
-    log_path: {type: IO::FileDescriptor, default: STDOUT, converter: IOConverter},
-    trust_headers_ip: {type: Bool, default: false},
-    log_headers: {type: Array(String), default: [] of String},
-    kemal_env: {type: String, default: "production"}
-  )
+  include JSON::Serializable
+  include JSON::Serializable::Strict
+
+  property root : String = "/var/www"
+  property port : UInt16 = 3000
+  property zip_path : String = ""
+
+  @[JSON::Field(key: "log_path", converter: IOConverter)]
+  property log : IO::FileDescriptor = STDOUT
+
+  property trust_headers_ip : Bool = false
+  property log_headers : Array(String) = [] of String
+  property kemal_env : String = "production"
 
   def self.load : Config
     settings_path = ""
@@ -42,7 +46,7 @@ class Config
     end
 
     settings = File.open(settings_path) { |f| Config.from_json f }
-    settings.port = ENV.fetch("PORT", settings.port.to_s).to_i
+    settings.port = ENV.fetch("PORT", settings.port.to_s).to_u16
     settings.root = ENV.fetch("ROOT", settings.root)
     settings.root = File.real_path(File.expand_path(settings.root))
     if settings.zip_path.empty? || !File.exists?(settings.zip_path)
@@ -60,9 +64,9 @@ end
 
 Settings = Config.load
 Kemal.config.powered_by_header = false
-Kemal.config.logger = JsonLogHandler.new Settings.log_path
+Kemal.config.logger = JsonLogHandler.new Settings.log
 Kemal.config.shutdown_message = false
-Kemal.config.port = Settings.port
+Kemal.config.port = Settings.port.to_i32
 Kemal.config.env = Settings.kemal_env
 serve_static false
 MIME.register ".ico", "image/x-icon" # only really needed for the favicon

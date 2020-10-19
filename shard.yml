@@ -8,13 +8,14 @@ targets:
   Zwip:
     main: src/zwip.cr
 
-crystal: 0.34.0
+crystal: 0.35.1
 
 license: MIT
 
 dependencies:
   kemal:
     github: kemalcr/kemal
+    branch: master
   slang:
     github: jeromegn/slang
   baked_file_system:

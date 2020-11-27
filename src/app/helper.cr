@@ -43,6 +43,16 @@ def index_paths(paths : Array(String), depth = 0) : Array(FileSystem::FileSystem
   return indexed
 end
 
+def cart_empty?(env) : Bool
+  return false unless env.request.cookies["cart"]?
+  begin
+    cart_paths = Array(String).from_json(env.request.cookies["cart"].value)
+    return cart_paths.empty?
+  rescue e : JSON::ParseException
+    return false
+  end
+end
+
 def get_cart(env) : Array(FileSystem::FileSystemEntry)
   if env.request.cookies["cart"]?
     begin

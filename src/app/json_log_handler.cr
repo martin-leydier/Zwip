@@ -40,7 +40,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
       return hdr unless hdr.nil?
 
       hdr = request.headers.fetch("X-Forwarded-For", nil)
-      return hdr.split(',')[0] unless hdr.nil?
+      return hdr.split(',')[-1].strip unless hdr.nil?
     end
     ip_port = request.remote_address
     return "unknown" if ip_port.nil? || !ip_port.responds_to? :address

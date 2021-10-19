@@ -1,5 +1,5 @@
 name: Zwip
-version: 0.6.0
+version: 0.8.99
 
 authors:
   - Martin Leydier <martin.leydier@gmail.com>
@@ -8,15 +8,16 @@ targets:
   Zwip:
     main: src/zwip.cr
 
-crystal: 0.35.1
+crystal: 1.2.0
 
 license: MIT
 
 dependencies:
   kemal:
     github: kemalcr/kemal
-    branch: master
   slang:
     github: jeromegn/slang
   baked_file_system:
     github: schovi/baked_file_system
+  cr_zip_tricks:
+    github: WeTransfer/cr_zip_tricks

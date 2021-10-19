@@ -20,8 +20,7 @@ A live demo is running over there: https://zwip.herokuapp.com/. In the demo, the
 
 ## Requirements
 
-* [Crystal](https://crystal-lang.org/) 0.34.0
-* zip(1) (Crystal does not support Zip64 yet)
+* [Crystal](https://crystal-lang.org/) 1.2.0
 
 ## Configuring
 
@@ -52,7 +51,7 @@ You have multiple options:
 2. Install Zwip to a location of your choice (/usr/bin/Zwip might be a good choice)
 3. Edit and copy the config file to a suitable location (/etc/Zwip.json for example)
 4. Setup a simple systemd service (or whatever is your init system of choice). A sample one is provided in the docs folder: [Zwip.service](docs/Zwip.service)
-5. `$ sudo systemctl --system daemon-reload`
+5. `$ sudo systemctl daemon-reload`
 6. `$ sudo systemctl enable Zwip.service`
 7. `$ sudo systemctl start Zwip.service`
 

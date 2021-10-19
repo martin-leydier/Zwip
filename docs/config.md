@@ -7,7 +7,6 @@ The file sets multiple options for the application runtime. Here is the default 
 {
   "root": "/var/www",
   "port": 3000,
-  "zip_path": "/usr/bin/zip",
   "log_path": null,
   "trust_headers_ip": false,
   "log_headers": [ "User-Agent", "Referer" ],
@@ -26,10 +25,6 @@ Here is a quick recap of each configuration option:
 - integer
 - can be overridden using the PORT environment variable
 - Port to listen to, Zwip will listen incoming requests at http://0.0.0.0:port/
-
-#### zip_path
-- string or null
-- Path to the zip(1) binary, if it is null or empty, then Zwip will search the PATH for it
 
 #### log_path
 - string or null

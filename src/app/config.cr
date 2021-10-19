@@ -16,7 +16,6 @@ class Config
 
   property root : String = "/var/www"
   property port : UInt16 = 3000
-  property zip_path : String = ""
 
   @[JSON::Field(key: "log_path", converter: IOConverter)]
   property log : IO::FileDescriptor = STDOUT
@@ -49,15 +48,6 @@ class Config
     settings.port = ENV.fetch("PORT", settings.port.to_s).to_u16
     settings.root = ENV.fetch("ROOT", settings.root)
     settings.root = File.real_path(File.expand_path(settings.root))
-    if settings.zip_path.empty? || !File.exists?(settings.zip_path)
-      settings.zip_path = ENV["PATH"].split ':' do |path|
-        zip_path = File.join(path, "zip")
-        if File.exists?(zip_path)
-          break zip_path
-        end
-      end || ""
-    end
-    abort "Could not find zip(1) in config or in PATH" if settings.zip_path.empty?
     settings
   end
 end

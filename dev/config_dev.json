@@ -1,7 +1,6 @@
 {
   "root": "/",
   "port": 5678,
-  "zip_path": "/usr/bin/zip",
   "log_path": null,
   "trust_headers_ip": false,
   "log_headers": [ "*" ],

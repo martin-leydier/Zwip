@@ -1,4 +1,5 @@
 require "mime"
+require "cr_zip_tricks"
 
 module FileSystem
   extend self
@@ -6,19 +7,19 @@ module FileSystem
   class FileSystemEntry
     getter real_path : String
     getter basename : String
-    getter file_info : File::Info
     getter mime : String
     getter icon : String
-    getter size : UInt64
     getter path : String
+    getter size : UInt64
+    getter file_info : File::Info
 
     def initialize(@real_path : String, @file_info : File::Info)
       @mime = MIME.from_filename(@real_path, "application/octet-stream")
       @icon = get_icon
-      @size = @file_info.size
       @basename = File.basename(real_path)
       @path = @real_path.lchop(Settings.root)
       @path = File::SEPARATOR + @path if @path.empty? || @path[0] != File::SEPARATOR
+      @size = @file_info.size.to_u64
     end
 
     def modification_time
@@ -35,6 +36,10 @@ module FileSystem
 
     def to_s(io)
       io << real_path << ", " << size << ", " << icon
+    end
+
+    def each_file(&block : FileSystemEntry ->)
+      block.call self
     end
 
     private def get_icon
@@ -60,6 +65,8 @@ module FileSystem
 
     def initialize(@real_path : String, @file_info : File::Info)
       super
+      @path += File::SEPARATOR unless @path[-1] == File::SEPARATOR
+      @size = 0
       @content = [] of FileSystemEntry
     end
 
@@ -72,6 +79,12 @@ module FileSystem
       super
       @content.each do |entry|
         io << "\n" << entry
+      end
+    end
+
+    def each_file(&block : FileSystemEntry ->)
+      @content.each do |e|
+        e.each_file(&block)
       end
     end
 
@@ -94,28 +107,34 @@ module FileSystem
     end
   end
 
-  def index(path, depth = 1, file_info = nil)
-    fs = recursive_index(path, depth, file_info)
+  def index(path, depth = 1, file_info = nil, zip_sizer : ZipTricks::Sizer? = nil)
+    fs = recursive_index(path, depth, file_info, zip_sizer)
     return fs unless fs.nil?
     raise "Failed to index path"
   end
 
-  private def recursive_index(path, depth = 1, file_info = nil)
+  private def recursive_index(path, depth = 1, file_info = nil, zip_sizer : ZipTricks::Sizer? = nil) : FileSystemEntry | FileSystemDirectory | Nil
     file_info = File.info(info_path(path), false) if file_info.nil?
-    this = nil
+
     if file_info.directory?
-      this = FileSystemDirectory.new(path, file_info)
+      dir = FileSystemDirectory.new(path, file_info)
+
       if depth != 0
         sorted_indexable(Dir.children(path), path).each do |child, child_info|
-          indexed = recursive_index(child, depth - 1, child_info)
+          indexed = recursive_index(child, depth - 1, child_info, zip_sizer)
           next if indexed.nil?
-          this.add_entry indexed
+          dir.add_entry indexed
         end
       end
+
+      return dir
     elsif file_info.file?
-      this = FileSystemEntry.new(path, file_info)
+      f = FileSystemEntry.new(path, file_info)
+      zip_sizer.predeclare_entry(filename: f.real_path, uncompressed_size: f.size, compressed_size: f.size, use_data_descriptor: true) unless zip_sizer.nil?
+      return f
     end
-    return this
+
+    return nil
   end
 
   private def sorted_indexable(entries, base_path)

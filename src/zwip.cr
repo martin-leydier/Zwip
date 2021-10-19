@@ -1,6 +1,7 @@
 require "kemal"
 require "kilt/slang"
 require "html"
+require "cr_zip_tricks"
 
 require "./app/*"
 require "./macros/*"
@@ -18,19 +19,37 @@ get "/.download" do |env|
 end
 
 get "/.zip" do |env|
+  env.response.headers.add("Accept-Ranges", "none")
   files = env.params.query.fetch_all("files")
-  indexed = index_paths(files, -1)
-  log({action: "Download started", files: indexed.map { |e| e.path }}, env)
+  indexed = nil
+
+  zip_size = ZipTricks::Sizer.size do |s|
+    indexed = index_paths(files, -1, s)
+  end
+
+  if indexed.nil?
+    next env.redirect "/.download"
+  end
+
+  log({action: "Download started", files: indexed.map { |e| e.path }, estimated_size: zip_size}, env)
+
   if indexed.size == 1 && !indexed[0].directory?
     send_file env, indexed[0].real_path, filename: indexed[0].basename, disposition: "attachment"
   elsif indexed.size > 0
-    args = ["-", "-y", "-r", "-0", "--"]
-    indexed.each do |i|
-      args << ".#{i.path}"
-    end
     env.response.content_type = "application/zip"
     env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
-    Process.run(command: Settings.zip_path, args: args, clear_env: true, shell: false, input: Process::Redirect::Close, output: env.response, error: Process::Redirect::Close, chdir: Settings.root)
+    env.response.headers["content-length"] = zip_size.to_s
+    ZipTricks::Streamer.archive(env.response) do |s|
+      indexed.each do |e|
+        e.each_file do |f|
+          s.add_stored(f.path) do |sink|
+            File.open(f.real_path, "rb") do |f|
+              IO.copy(f, sink)
+            end
+          end
+        end
+      end
+    end
   else
     env.redirect "/.download"
   end

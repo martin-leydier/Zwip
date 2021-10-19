@@ -41,7 +41,7 @@ Here is a quick recap of each configuration option:
 
 #### log_headers
 - array of strings
-- When logging requests, Zwip will additionally log the values of each request header specified in this option
+- When logging requests, Zwip will additionally log the values of each request header specified in this option. The special value "\*" will log all headers
 
 #### kemal_env
 - string

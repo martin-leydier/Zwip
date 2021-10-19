@@ -1,34 +1,55 @@
 class JsonLogHandler < Kemal::BaseLogHandler
+  @builder : JSON::Builder
+  @all_headers : Bool
   @log_headers : Array(String)
 
   def initialize(@io : IO::FileDescriptor = STDOUT)
+    @builder = JSON::Builder.new(@io)
+    @builder.indent = "\t" unless Settings.kemal_env == "production"
+    @all_headers = Settings.log_headers.any? { |e| e == "*" }
     @log_headers = Settings.log_headers
   end
 
   def call(context : HTTP::Server::Context)
     elapsed = Time.measure { call_next(context) }
-    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\","
-    log_http_context context
-    @io << ",\"http_status\":" << context.response.status_code << ","
-    @io << "\"request_milliseconds\":" << elapsed.total_milliseconds << "}\n"
+    @builder.document do
+      @builder.object do
+        @builder.field "time", Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z")
+        log_http_context context
+        @builder.field "http_status", context.response.status_code
+        @builder.field "request_milliseconds", elapsed.total_milliseconds
+      end
+    end
+
+    @io << '\n'
     @io.flush
     context
   end
 
   # Only used to log Kemal's log, we chomp the last line feed
   def write(message : String)
-    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message[0..-2].to_json << "}\n"
+    @builder.document do
+      @builder.object do
+        @builder.field "time", Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z")
+        @builder.field "message", message[0..-2]
+      end
+    end
+
+    @io << '\n'
     @io.flush
   end
 
   # Used by zwip's log() helper function
   def write_json(message : String, context : HTTP::Server::Context? = nil)
-    @io << "{\"time\":\"" << Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z") << "\",\"message\": " << message
-    unless context.nil?
-      @io << ","
-      log_http_context context
+    @builder.document do
+      @builder.object do
+        @builder.field "time", Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z")
+        @builder.field "message", message
+        log_http_context context unless context.nil?
+      end
     end
-    @io << "}\n"
+
+    @io << '\n'
     @io.flush
   end
 
@@ -62,14 +83,20 @@ class JsonLogHandler < Kemal::BaseLogHandler
 
   # Log misc http values
   private def log_http_context(env : HTTP::Server::Context)
-    @io << "\"src_ip\":\"" << request_ip(env.request) << "\","
-    @io << "\"http_method\":\"" << env.request.method << "\","
-    @io << "\"http_uri_path\":" << env.request.resource.to_json << ","
-    @io << "\"headers\":{"
-    @log_headers.join(@io, ",") do |header, io|
-      io << header.to_json << ":" << env.request.headers.fetch(header, "").to_json
+    @builder.field "src_ip", request_ip(env.request)
+    @builder.field "http_method", env.request.method
+    @builder.field "http_uri_path", env.request.resource
+    @builder.field "headers" do
+      if @all_headers
+        env.request.headers.to_json(@builder)
+      else
+        @builder.object do
+          @log_headers.each do |h|
+            @builder.field h, env.request.headers.fetch(h, nil)
+          end
+        end
+      end
     end
-    @io << "}"
   end
 end
 

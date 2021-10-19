@@ -58,12 +58,13 @@ You have multiple options:
 ### Docker
 
 You can also deploy Zwip using the provided docker image, either by pulling it from the docker hub or by building it yourself.
-The final image is built from scratch and only contains Zwip, busybox, zip, and su-exec. It runs Zwip as an unprivileged user of your choice by executing it as the user id/group id provided by the UID and GID environment variable.
-The image also contains the default config.json as well as 1014:1014 default UID:GID.
+The final image is built from scratch and only contains Zwip. It runs Zwip as an unprivileged user id 12345 and group id 12345.
+It is recommended to change it to a more appropriate uid:gid for your setup using the --user directive of docker.
+The image also contains the default config.json.
 
 Using the command line:
 ```shell
-$ sudo docker run -p 3000:3000 -v /var/www:/var/www:ro -v "$(pwd)/config.json:/config.json:ro" -e UID=1014 -e GID=1014 martinleydier/zwip
+$ sudo docker run -p 3000:3000 -v /var/www:/var/www:ro -v "$(pwd)/config.json:/config.json:ro" --user 12345:12345 martinleydier/zwip
 ```
 
 In a docker-compose.yml:
@@ -77,9 +78,7 @@ services:
     volumes:
       - "/var/www:/var/www:ro"
       - "./config.json:/config.json:ro"
-    environment:
-      - "UID=1014"
-      - "GID=1014"
+    user: "12345:12345"
     hostname: zwip
     restart: always
 ```

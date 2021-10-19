@@ -6,13 +6,13 @@ shards:
 	shards check || shards install
 
 run: shards
-	crystal run -s -p -t src/zwip.cr
+	crystal run -s -p -t --error-trace src/zwip.cr -- -c "$(shell pwd)/dev/config_dev.json"
 
-dev/sentry.cr: shards
+sentry:
 	curl -fsSLo- https://raw.githubusercontent.com/samueleaton/sentry/master/install.cr | crystal eval
 
-dev: dev/sentry.cr
-	crystal dev/sentry_config.cr
+dev: sentry shards
+	./sentry -b "crystal build --error-trace ./src/zwip.cr -o ./bin/zwip" -n "Zwip" -r "./bin/zwip" --run-args="-c $(shell pwd)/dev/config_dev.json" -w "./src/**/*.cr" -w "./src/**/*.slang" -w "./public/**/*"
 
 release:
 	shards --production build --release -s -p -t

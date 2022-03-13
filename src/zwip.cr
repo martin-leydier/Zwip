@@ -1,5 +1,5 @@
-require "kemal"
 require "kilt/slang"
+require "kemal"
 require "html"
 require "cr_zip_tricks"
 
@@ -15,7 +15,7 @@ before_get do |env|
 end
 
 get "/.download" do |env|
-  view("site/download", env)
+  view "site/download"
 end
 
 get "/.zip" do |env|
@@ -58,12 +58,12 @@ end
 
 get "/.list" do |env|
   cart = get_cart(env)
-  view("site/list", env)
+  view "site/list"
 end
 
 get "/" do |env|
   files = FileSystem.index(Settings.root).as(FileSystem::FileSystemDirectory)
-  view("site/index", env)
+  view "site/index"
 end
 
 get "/*" do |env|
@@ -71,7 +71,7 @@ get "/*" do |env|
   path = env.request.path
   files = FileSystem.index(full_path env)
   if files.is_a? FileSystem::FileSystemDirectory
-    view("site/index", env)
+    view "site/index"
   else
     send_file env, files.real_path, filename: files.basename, disposition: "attachment"
   end

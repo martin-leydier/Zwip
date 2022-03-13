@@ -64,7 +64,7 @@ The image also contains the default config.json.
 
 Using the command line:
 ```shell
-$ sudo docker run -p 3000:3000 -v /var/www:/var/www:ro -v "$(pwd)/config.json:/config.json:ro" --user 12345:12345 martinleydier/zwip
+$ sudo docker run -p 3000:3000 -v /var/www:/var/www:ro -v "$(pwd)/config.json:/config.json:ro" --user 12345:12345 --cap-drop=all --security-opt=no-new-privileges:true martinleydier/zwip
 ```
 
 In a docker-compose.yml:
@@ -79,6 +79,11 @@ services:
       - "/var/www:/var/www:ro"
       - "./config.json:/config.json:ro"
     user: "12345:12345"
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true
     hostname: zwip
+    container_name: zwip
     restart: always
 ```

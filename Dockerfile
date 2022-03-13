@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.2.0-alpine AS build
+FROM crystallang/crystal:1.3.2-alpine AS build
 
 WORKDIR /build
 # mailcap provides mime types db

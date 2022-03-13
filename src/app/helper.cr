@@ -1,24 +1,32 @@
 def info_path(path)
   path = path.chomp "/"
   return "/" if path.empty?
+
   return path
 end
 
 def valid_path?(path : String)
   expanded_path = File.expand_path path
   return {false, nil} unless expanded_path.starts_with?(Settings.root) # path cannot be outside of root
+
   request_path = expanded_path.lchop(Settings.root).split('/', remove_empty: true)
   return {true, nil} if request_path.size == 1 && ({".list", ".download", ".zip"}.any? request_path[0]) # path can be a reserved path
-  return {false, nil} if request_path.any? { |e| e[0] == '.' }                                          # path cannot be a hidden file/folder
-  return {true, nil} unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil?                   # path can be a public resource
+
+  return {false, nil} if request_path.any? { |e| e[0] == '.' } # path cannot be a hidden file/folder
+
+  return {true, nil} unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil? # path can be a public resource
+
   begin
     real_path = File.real_path expanded_path
   rescue e : File::NotFoundError | File::Error # File::Error is raised when attempting to treat a file as a directory
     return {false, nil}
   end
+
   return {false, nil} if expanded_path.chomp("/") != real_path.chomp("/") # path cannot contain symlinks
+
   info = File.info?(info_path(expanded_path), false)
   return {true, info} if info && (info.directory? || info.file?) # path should be either a file or a dir
+
   return {false, nil}
 end
 

@@ -14,11 +14,11 @@ shards:
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
-    version: 0.2.0
+    version: 0.2.2
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 1.1.0
+    version: 1.1.2
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
@@ -31,4 +31,8 @@ shards:
   slang:
     git: https://github.com/jeromegn/slang.git
     version: 1.7.3
+
+  spec-kemal:
+    git: https://github.com/kemalcr/spec-kemal.git
+    version: 1.0.0
 

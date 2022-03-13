@@ -19,30 +19,30 @@ html style="background-color: #f9f9fa;"
     .header
       #breadcrumb.item
         a.header-inline-icon href="/" onclick="event.preventDefault();navigateContent('/')" data-tooltip="Home"
-          i.fas.fa-home.larger-icon
+          i.fas.fa-fw.fa-home.larger-icon
           span.pl Home
         - if env.request.path == "/.list"
-          i.fas.fa-slash.path-separator
+          i.fas.fa-fw.fa-slash.path-separator
           a.header-inline-icon href="/.list" onclick="event.preventDefault();navigateContent('/.cart')" data-tooltip="Cart"
-            i.fas.fa-cart-arrow-down.larger-icon
+            i.fas.fa-fw.fa-cart-arrow-down.larger-icon
             span.pl Cart
         - elsif env.request.path == "/.download"
-          i.fas.fa-slash.path-separator
+          i.fas.fa-fw.fa-slash.path-separator
           a.header-inline-icon href="/.download" onclick="event.preventDefault();navigateContent('/.download')" data-tooltip="Download"
-            i.fas.fa-download.larger-icon
+            i.fas.fa-fw.fa-download.larger-icon
             span.pl Download
         - else
           - path = "/"
           - env.request.path.split('/', remove_empty: true).each do |part|
             - path += part + "/"
-            i.fas.fa-slash.path-separator
+            i.fas.fa-fw.fa-slash.path-separator
             a href=path onclick="event.preventDefault();navigateContent('#{path}')"
               == HTML.escape(URI.decode_www_form part, plus_to_space: false)
       #rightmenu
         a.item.tooltip.tooltip-bottom#download data-tooltip="Download cart" href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
-          i.fas.fa-download
+          i.fas.fa-fw.fa-download
         a.item.tooltip.tooltip-bottom data-tooltip="Cart" href="/.list" onclick="event.preventDefault();navigateContent('/.list')"
-          i.fas.fa-cart-arrow-down style="margin-right: .5rem;"
+          i.fas.fa-fw.fa-cart-arrow-down style="margin-right: .5rem;"
           span#cartCount
             = get_cart(env).size
         a.hide-sm.item target="_blank" rel="noopener noreferrer" href="https://github.com/martin-leydier/Zwip"

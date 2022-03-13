@@ -20,7 +20,7 @@ A live demo is running over there: https://zwip.herokuapp.com/. In the demo, the
 
 ## Requirements
 
-* [Crystal](https://crystal-lang.org/) 1.2.0
+* [Crystal](https://crystal-lang.org/) 1.3.2
 
 ## Configuring
 

@@ -51,7 +51,7 @@ def index_paths(paths : Array(String), depth = 0, zip_sizer : ZipTricks::Sizer? 
     next if !valid || info.nil?
     next if info.directory? && p_set.any? { |e| real_path.starts_with? e }
     p_set.add real_path
-    indexed << FileSystem.index(path, depth, nil, zip_sizer)
+    indexed << FileSystem.index(real_path, depth, nil, zip_sizer)
   end
   return indexed
 end

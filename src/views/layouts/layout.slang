@@ -9,11 +9,11 @@ html style="background-color: #f9f9fa;"
     meta name="apple-mobile-web-app-capable" content="yes"
     meta name="apple-mobile-web-app-status-bar-style" content="black"
     link rel="stylesheet" href="/css/normalize.css"
-    link rel="stylesheet" href="/css/fontawesome.css?v=#{ {{ `git rev-parse --short HEAD`.chomp.stringify }} }"
-    link rel="stylesheet" href="/css/tooltips.css?v=#{ {{ `git rev-parse --short HEAD`.chomp.stringify }} }"
-    link rel="stylesheet" href="/css/site.css?v=#{ {{ `git rev-parse --short HEAD`.chomp.stringify }} }"
+    link rel="stylesheet" href="/css/fontawesome.css?v=#{version}"
+    link rel="stylesheet" href="/css/tooltips.css?v=#{version}"
+    link rel="stylesheet" href="/css/site.css?v=#{version}"
     link rel="shortcut icon" href="/favicon.ico"
-    script src="/js/site.js?v=#{ {{ `git rev-parse --short HEAD`.chomp.stringify }} }"
+    script src="/js/site.js?v=#{version}"
 
   body
     .header

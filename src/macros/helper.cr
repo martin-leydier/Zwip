@@ -10,3 +10,7 @@ macro view(path)
     Kilt.render "#{__DIR__}/views/layouts/layout.slang"
   {% end %}
 end
+
+macro version
+  {{ `git rev-parse --short HEAD || echo -n "unk"`.chomp.stringify }}
+end

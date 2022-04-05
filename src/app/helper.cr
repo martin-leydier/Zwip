@@ -31,7 +31,7 @@ def valid_path?(path : String)
 end
 
 def log(message, env : HTTP::Server::Context? = nil)
-  Kemal.config.logger.as(JsonLogHandler).write_json message.to_json, env
+  Kemal.config.logger.as(JsonLogHandler).write_msg message, env
 end
 
 def full_path(path : String)

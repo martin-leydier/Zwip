@@ -40,7 +40,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
   end
 
   # Used by zwip's log() helper function
-  def write_json(message : String, context : HTTP::Server::Context? = nil)
+  def write_msg(message, context : HTTP::Server::Context? = nil)
     @builder.document do
       @builder.object do
         @builder.field "time", Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z")
@@ -77,7 +77,7 @@ class JsonLogHandler < Kemal::BaseLogHandler
       return unless path
       new_io = File.open path, "a"
       @io.reopen(new_io)
-      write_json({action: "Log file re-opened", path: path}.to_json)
+      write_msg({action: "Log file re-opened", path: path})
     end
   end
 

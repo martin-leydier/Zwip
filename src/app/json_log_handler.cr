@@ -16,8 +16,8 @@ class JsonLogHandler < Kemal::BaseLogHandler
       @builder.object do
         @builder.field "time", Time.local.to_s("%Y-%m-%dT%H:%M:%S.%L%:z")
         log_http_context context
-        @builder.field "http_status", context.response.status_code
-        @builder.field "request_milliseconds", elapsed.total_milliseconds
+        @builder.field "status", context.response.status_code
+        @builder.field "duration", elapsed.total_nanoseconds.to_i64
       end
     end
 
@@ -83,9 +83,9 @@ class JsonLogHandler < Kemal::BaseLogHandler
 
   # Log misc http values
   private def log_http_context(env : HTTP::Server::Context)
-    @builder.field "src_ip", request_ip(env.request)
-    @builder.field "http_method", env.request.method
-    @builder.field "http_uri_path", env.request.resource
+    @builder.field "src", request_ip(env.request)
+    @builder.field "method", env.request.method
+    @builder.field "uri", env.request.resource
     @builder.field "headers" do
       if @all_headers
         env.request.headers.to_json(@builder)

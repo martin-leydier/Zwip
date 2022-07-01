@@ -48,7 +48,13 @@ get "/#{RESERVED_PATHS[:zip]}" do |env|
         e.each_file do |f|
           s.add_stored(f.path) do |sink|
             File.open(f.real_path, "rb") do |f|
-              IO.copy(f, sink)
+              buffer = uninitialized UInt8[4096]
+              count = 0_i64
+              while (len = f.read(buffer.to_slice).to_i32) > 0
+                sink.write buffer.to_slice[0, len]
+                count &+= len
+                Fiber.yield if count % 40960 == 0 # give other transfers a chance
+              end
             end
           end
         end

@@ -8,7 +8,7 @@ require "./macros/*"
 
 before_get do |env|
   request_path = full_path env
-  unless valid_path? request_path
+  unless valid_path?(request_path)[0]
     env.redirect "/"
     halt env, status_code: 307
   end

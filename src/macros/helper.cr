@@ -12,5 +12,5 @@ macro view(path)
 end
 
 macro version
-  {{ `git rev-parse --short HEAD || echo -n "unk"`.chomp.stringify }}
+  {{ `git rev-parse --short HEAD || (dd if=/dev/urandom bs=16 count=1 | sha1sum | cut -d' ' -f1) || echo -n "unk"`.chomp.stringify }}
 end

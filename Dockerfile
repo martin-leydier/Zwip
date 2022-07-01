@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.3.2-alpine AS build
+FROM crystallang/crystal:1.4.1-alpine AS build
 
 WORKDIR /build
 # mailcap provides mime types db
@@ -16,7 +16,7 @@ VOLUME ["/var/www"]
 EXPOSE 3000/tcp
 ENTRYPOINT ["/Zwip"]
 CMD [ "-c", "/config.json"]
-HEALTHCHECK --timeout=5s ["CMD", "/Zwip", "-h", "3000"]
+HEALTHCHECK --timeout=5s CMD ["/Zwip", "-h", "3000"]
 
 COPY --from=build /etc/mime.types /etc/mime.types
 COPY --from=build /zwip/config.json /config.json

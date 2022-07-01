@@ -16,6 +16,7 @@ VOLUME ["/var/www"]
 EXPOSE 3000/tcp
 ENTRYPOINT ["/Zwip"]
 CMD [ "-c", "/config.json"]
+HEALTHCHECK --timeout=5s ["CMD", "/Zwip", "-h", "3000"]
 
 COPY --from=build /etc/mime.types /etc/mime.types
 COPY --from=build /zwip/config.json /config.json

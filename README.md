@@ -83,6 +83,8 @@ services:
       - all
     security_opt:
       - no-new-privileges:true
+    ulimits:
+      nproc: 2 # server & healthcheck
     hostname: zwip
     container_name: zwip
     restart: always

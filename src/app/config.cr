@@ -36,6 +36,22 @@ class Config
       parser.on "-c PATH", "--config=PATH", "Set config file path" do |path|
         settings_path = path
       end
+      parser.on "-h PORT", "--health=PORT", "Check service health at given port" do |port_str|
+        begin
+          port = port_str.to_u16
+        rescue ArgumentError
+          exit 1
+        end
+        client = HTTP::Client.new("127.0.0.1", port)
+        client.connect_timeout = 1
+        client.read_timeout = 1
+        begin
+          response = client.head("/.health")
+          exit response.status_code == 200 ? 0 : 1
+        rescue IO::TimeoutError
+          exit 1
+        end
+      end
     end
     if settings_path.empty?
       settings_path = File.join(File.dirname(PROGRAM_NAME), "config.json")
@@ -53,6 +69,7 @@ class Config
 end
 
 Settings = Config.load
+Kemal.config.app_name = "Zwip"
 Kemal.config.powered_by_header = false
 Kemal.config.logger = JsonLogHandler.new Settings.log
 Kemal.config.shutdown_message = false

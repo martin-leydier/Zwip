@@ -5,12 +5,20 @@ def info_path(path)
   return path
 end
 
+RESERVED_PATHS =
+  {
+    list:     ".list",
+    download: ".download",
+    zip:      ".zip",
+    health:   ".health",
+  }
+
 def valid_path?(path : String)
   expanded_path = File.expand_path path
   return {false, nil} unless expanded_path.starts_with?(Settings.root) # path cannot be outside of root
 
   request_path = expanded_path.lchop(Settings.root).split('/', remove_empty: true)
-  return {true, nil} if request_path.size == 1 && ({".list", ".download", ".zip"}.any? request_path[0]) # path can be a reserved path
+  return {true, nil} if request_path.size == 1 && (RESERVED_PATHS.values.any? request_path[0]) # path can be a reserved path
 
   return {false, nil} if request_path.any? { |e| e[0] == '.' } # path cannot be a hidden file/folder
 

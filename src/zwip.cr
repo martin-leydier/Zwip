@@ -14,11 +14,15 @@ before_get do |env|
   end
 end
 
-get "/.download" do |env|
+get "/#{RESERVED_PATHS[:health]}" do |env|
+  halt env
+end
+
+get "/#{RESERVED_PATHS[:download]}" do |env|
   view "site/download"
 end
 
-get "/.zip" do |env|
+get "/#{RESERVED_PATHS[:zip]}" do |env|
   env.response.headers.add("Accept-Ranges", "none")
   files = env.params.query.fetch_all("files")
   indexed = nil
@@ -31,11 +35,11 @@ get "/.zip" do |env|
     next env.redirect "/.download"
   end
 
-  log({action: "Download started", files: indexed.map { |e| e.path }, estimated_size: zip_size}, env)
-
   if indexed.size == 1 && !indexed[0].directory?
+    log({action: "Download started", files: indexed.map { |e| e.path }, estimated_size: indexed[0].size}, env)
     send_file env, indexed[0].real_path, filename: indexed[0].basename, disposition: "attachment"
   elsif indexed.size > 0
+    log({action: "Download started", files: indexed.map { |e| e.path }, estimated_size: zip_size}, env)
     env.response.content_type = "application/zip"
     env.response.headers["content-disposition"] = "attachment; filename=\"download.zip\""
     env.response.headers["content-length"] = zip_size.to_s

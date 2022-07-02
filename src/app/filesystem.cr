@@ -130,7 +130,7 @@ module FileSystem
       return dir
     elsif file_info.file?
       f = FileSystemEntry.new(path, file_info)
-      zip_sizer.predeclare_entry(filename: f.real_path, uncompressed_size: f.size, compressed_size: f.size, use_data_descriptor: true) unless zip_sizer.nil?
+      zip_sizer.predeclare_entry(filename: f.path, uncompressed_size: f.size, compressed_size: f.size, use_data_descriptor: true) unless zip_sizer.nil?
       return f
     end
 

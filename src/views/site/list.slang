@@ -28,7 +28,7 @@
           i.fas.fa-fw.fa-folder
           .space-between.mono
             .content
-              = file.basename
+              = file.path
             .size-badge
               = file.size.humanize_bytes
       - else
@@ -36,7 +36,7 @@
           i.fas.fa-fw class=file.icon
           .space-between.mono
             .content
-              = file.basename
+              = file.path
             .size-badge
               = file.size.humanize_bytes
       .entry-buttons

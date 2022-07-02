@@ -20,7 +20,8 @@ dependencies:
   baked_file_system:
     github: schovi/baked_file_system
   cr_zip_tricks:
-    github: WeTransfer/cr_zip_tricks
+    github: martin-leydier/cr_zip_tricks
+    branch: hotfix/streamer-zip64
   spec-kemal:
     github: kemalcr/spec-kemal
   kilt:

@@ -9,8 +9,8 @@ shards:
     version: 0.10.0
 
   cr_zip_tricks:
-    git: https://github.com/wetransfer/cr_zip_tricks.git
-    version: 0.3.0
+    git: https://github.com/martin-leydier/cr_zip_tricks.git
+    version: 0.3.0+git.commit.9d49c834bf1e39fed11dd7e05d5f79beba7d8bde
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git

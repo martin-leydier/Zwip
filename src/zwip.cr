@@ -46,7 +46,7 @@ get "/#{RESERVED_PATHS[:zip]}" do |env|
     ZipTricks::Streamer.archive(env.response) do |s|
       indexed.each do |e|
         e.each_file do |f|
-          s.add_stored(f.path) do |sink|
+          s.add_stored(f.path, f.size) do |sink|
             File.open(f.real_path, "rb") do |f|
               buffer = uninitialized UInt8[4096]
               count = 0_i64

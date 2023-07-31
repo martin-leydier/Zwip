@@ -5,6 +5,7 @@ require "../filesystem.cr"
 
 class ZipWriteIO
   @entries_count : UInt64 = 0
+  @added_files = Set(String).new
 
   def initialize(@io : IO)
     # minimum size for a 1-file archive
@@ -27,6 +28,9 @@ class ZipWriteIO
   def add(file : FileSystem::FileSystemEntry) : Nil
     lfh_offset = @io.tell
     file_path = file.path[1..]
+    new_file = @added_files.add? file_path
+    return unless new_file
+
     write_struct ZipStructs::LocalFileHeader.new(
       signature: 0x04034b50,
       # So the zip spec doesn't seem clear about this: the UTF-8 in filename spec is newer than the ZIP spec

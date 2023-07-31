@@ -63,7 +63,7 @@ class Config
     settings = File.open(settings_path) { |f| Config.from_json f }
     settings.port = ENV.fetch("PORT", settings.port.to_s).to_u16
     settings.root = ENV.fetch("ROOT", settings.root)
-    settings.root = File.real_path(File.expand_path(settings.root))
+    settings.root = File.realpath(File.expand_path(settings.root))
     settings
   end
 end

@@ -2,23 +2,19 @@ version: 2.0
 shards:
   backtracer:
     git: https://github.com/sija/backtracer.cr.git
-    version: 1.2.1
+    version: 1.2.2
 
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
     version: 0.10.0
 
-  cr_zip_tricks:
-    git: https://github.com/martin-leydier/cr_zip_tricks.git
-    version: 0.3.0+git.commit.9d49c834bf1e39fed11dd7e05d5f79beba7d8bde
-
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
-    version: 0.2.2
+    version: 0.3.1
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 1.1.2
+    version: 1.4.0
 
   kilt:
     git: https://github.com/jeromegn/kilt.git

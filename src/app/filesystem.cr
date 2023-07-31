@@ -1,5 +1,6 @@
 require "mime"
-require "cr_zip_tricks"
+
+require "./zip/sizer.cr"
 
 module FileSystem
   extend self
@@ -107,13 +108,13 @@ module FileSystem
     end
   end
 
-  def index(path, depth = 1, file_info = nil, zip_sizer : ZipTricks::Sizer? = nil)
+  def index(path, depth = 1, file_info = nil, zip_sizer : ZipSizer? = nil)
     fs = recursive_index(path, depth, file_info, zip_sizer)
     return fs unless fs.nil?
     raise "Failed to index path"
   end
 
-  private def recursive_index(path, depth = 1, file_info = nil, zip_sizer : ZipTricks::Sizer? = nil) : FileSystemEntry | FileSystemDirectory | Nil
+  private def recursive_index(path, depth = 1, file_info = nil, zip_sizer : ZipSizer? = nil) : FileSystemEntry | FileSystemDirectory | Nil
     file_info = File.info(info_path(path), false) if file_info.nil?
 
     if file_info.directory?
@@ -130,7 +131,7 @@ module FileSystem
       return dir
     elsif file_info.file?
       f = FileSystemEntry.new(path, file_info)
-      zip_sizer.predeclare_entry(filename: f.path, uncompressed_size: f.size, compressed_size: f.size, use_data_descriptor: true) unless zip_sizer.nil?
+      zip_sizer.add(f) unless zip_sizer.nil?
       return f
     end
 

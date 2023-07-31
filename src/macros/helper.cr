@@ -11,6 +11,6 @@ macro view(path)
   {% end %}
 end
 
-macro version
+macro gen_version
   {{ `git rev-parse --short HEAD || (dd if=/dev/urandom bs=16 count=1 | sha1sum | cut -d' ' -f1) || echo -n "unk"`.chomp.stringify }}
 end

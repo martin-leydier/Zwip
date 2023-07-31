@@ -1,6 +1,6 @@
 def info_path(path)
   path = path.chomp "/"
-  return "/" if path.empty?
+  return Settings.root if path.empty?
 
   return path
 end
@@ -25,7 +25,7 @@ def valid_path?(path : String)
   return {true, nil} unless FileStorage.get?(expanded_path.lchop(Settings.root)).nil? # path can be a public resource
 
   begin
-    real_path = File.real_path expanded_path
+    real_path = File.realpath expanded_path
   rescue e : File::NotFoundError | File::Error # File::Error is raised when attempting to treat a file as a directory
     return {false, nil}
   end
@@ -50,7 +50,7 @@ def full_path(env : HTTP::Server::Context)
   File.join(Settings.root, URI.decode_www_form(env.request.path, plus_to_space: false))
 end
 
-def index_paths(paths : Array(String), depth = 0, zip_sizer : ZipTricks::Sizer? = nil) : Array(FileSystem::FileSystemEntry)
+def index_paths(paths : Array(String), depth = 0, zip_sizer = nil) : Array(FileSystem::FileSystemEntry)
   indexed = [] of FileSystem::FileSystemEntry
   p_set = Set(String).new
   paths.each do |path|
@@ -103,26 +103,4 @@ def get_prev_folder(path)
   return "/" if path_split.size < 2
 
   return URI.decode_www_form(path_split[-2], plus_to_space: false)
-end
-
-class SkippingResponse < IO
-  def read(slice : Bytes)
-    raise IO::Error.new "Unsupported operation"
-  end
-
-  def write(slice : Bytes) : Nil
-    return unless @selected.includes? @pos
-
-    sub_slice = slice[0, (@selected.end - @pos - (@selected.excludes_end? ? 1 : 0)).clamp(nil, slice.size - 1)]?
-    return if sub_slice.nil?
-
-    @pos += sub_slice.size
-    @response.write(sub_slice)
-    @response.close unless @selected.includes? @pos
-  end
-
-  def initialize(@response : HTTP::Server::Response, @selected : Range(UInt64, UInt64))
-    @pos : UInt64 = 0
-    super()
-  end
 end

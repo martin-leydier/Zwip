@@ -14,7 +14,7 @@ A simple HTTP file server. Supports easy grouping of file downloads and zip stre
 
 ## Demo
 
-A live demo is running over there: https://zwip.herokuapp.com/. In the demo, the root is set as `/`
+A live demo is running over there: https://zwip.onrender.com. In the demo, the root is set as `/`
 
 [![](/docs/images/Zwip.png?raw=true "https://zwip.herokuapp.com")](https://zwip.herokuapp.com)
 

@@ -1,5 +1,5 @@
 {
-  "root": "/",
+  "root": "/var/www",
   "port": 5678,
   "log_path": null,
   "trust_headers_ip": false,

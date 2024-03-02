@@ -40,6 +40,8 @@ html style="background-color: #f9f9fa;"
             a href=path onclick="event.preventDefault();navigateContent('#{path}')"
               == HTML.escape(URI.decode_www_form part, plus_to_space: false)
       #rightmenu
+        a.item.tooltip.tooltip-bottom data-tooltip="Search in current folder" onclick="search();"
+          i.fas.fa-fw.fa-search
         a.item.tooltip.tooltip-bottom#download data-tooltip="Download cart" href="/.download" onclick="event.preventDefault();navigateContent('/.download')"
           i.fas.fa-fw.fa-download
         a.item.tooltip.tooltip-bottom data-tooltip="Cart" href="/.list" onclick="event.preventDefault();navigateContent('/.list')"

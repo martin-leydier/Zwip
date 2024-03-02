@@ -209,3 +209,14 @@ function navigateContent(path, pushState = true) {
 window.addEventListener("popstate", function(e) {
   navigateContent(location.pathname, false);
 });
+
+function search() {
+  
+}
+
+document.onkeydown = function(e) {
+    if (e.key === "/") {
+      search();
+      return;
+    }
+}

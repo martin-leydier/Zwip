@@ -77,3 +77,8 @@ Kemal.config.port = Settings.port.to_i32
 Kemal.config.env = Settings.kemal_env
 serve_static false
 MIME.register ".ico", "image/x-icon" # only really needed for the favicon
+
+Signal::TERM.trap do
+  Kemal.stop
+  exit
+end

@@ -16,11 +16,11 @@ A simple HTTP file server. Supports easy grouping of file downloads and zip stre
 
 A live demo is running over there: https://zwip.onrender.com. In the demo, the root is set as `/`
 
-[![](/docs/images/Zwip.png?raw=true "https://zwip.herokuapp.com")](https://zwip.herokuapp.com)
+[![](/docs/images/Zwip.png?raw=true "https://zwip.herokuapp.com")](https://zwip.onrender.com)
 
 ## Requirements
 
-* [Crystal](https://crystal-lang.org/) 1.9.2
+* [Crystal](https://crystal-lang.org/) 1.11.2
 
 ## Configuring
 

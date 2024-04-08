@@ -8,7 +8,7 @@ targets:
   Zwip:
     main: src/zwip.cr
 
-crystal: 1.9.2
+crystal: 1.11.2
 
 license: MIT
 

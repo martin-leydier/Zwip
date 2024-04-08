@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.9.2-alpine AS build
+FROM crystallang/crystal:1.11.2-alpine AS build
 
 WORKDIR /build
 # mailcap provides mime types db
@@ -6,7 +6,7 @@ RUN apk add mailcap
 
 COPY . /zwip
 WORKDIR /zwip
-RUN make release_static && strip -s /zwip/bin/Zwip
+RUN make release_static
 
 FROM scratch
 

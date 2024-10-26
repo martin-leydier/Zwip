@@ -143,7 +143,7 @@ module FileSystem
     entries.each do |e|
       next if e[0] == '.'
       full_path = File.join(base_path, e)
-      next unless File.readable? full_path
+      next unless File::Info.readable? full_path
       info = File.info(info_path(full_path), false)
       next if !info.directory? && !info.file?
       visible << {full_path, info}

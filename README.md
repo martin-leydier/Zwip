@@ -20,7 +20,7 @@ A live demo is running over there: https://zwip.onrender.com. In the demo, the r
 
 ## Requirements
 
-* [Crystal](https://crystal-lang.org/) 1.11.2
+* [Crystal](https://crystal-lang.org/) 1.13.2
 
 ## Configuring
 

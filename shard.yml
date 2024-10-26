@@ -1,5 +1,5 @@
 name: Zwip
-version: 0.10.0
+version: 1.0.0
 
 authors:
   - Martin Leydier <martin.leydier@gmail.com>
@@ -8,7 +8,7 @@ targets:
   Zwip:
     main: src/zwip.cr
 
-crystal: 1.11.2
+crystal: 1.13.2
 
 license: MIT
 

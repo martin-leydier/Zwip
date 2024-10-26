@@ -30,7 +30,7 @@ get "/#{RESERVED_PATHS[:download]}" do |env|
 end
 
 get "/#{RESERVED_PATHS[:zip]}" do |env|
-  env.response.headers.add("Accept-Ranges", "none")
+  env.response.headers.add("Accept-Ranges", "bytes")
   files = env.params.query.fetch_all("files")
   indexed = nil
 
@@ -81,7 +81,7 @@ get "/*" do |env|
   if files.is_a? FileSystem::FileSystemDirectory
     view "site/index"
   else
-    send_file env, files.real_path, filename: files.basename, disposition: "attachment"
+    env.redirect "/"
   end
 end
 

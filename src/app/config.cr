@@ -43,8 +43,8 @@ class Config
           exit 1
         end
         client = HTTP::Client.new("127.0.0.1", port)
-        client.connect_timeout = 1
-        client.read_timeout = 1
+        client.connect_timeout = 1.second
+        client.read_timeout = 1.second
         begin
           response = client.head("/.health")
           exit response.status_code == 200 ? 0 : 1
@@ -56,7 +56,7 @@ class Config
     if settings_path.empty?
       settings_path = File.join(File.dirname(PROGRAM_NAME), "config.json")
     end
-    if !File.exists?(settings_path) || !File.readable?(settings_path)
+    if !File.exists?(settings_path) || !File::Info.readable?(settings_path)
       abort "No settings file found, or it was unreadable (looked for: #{settings_path})"
     end
 

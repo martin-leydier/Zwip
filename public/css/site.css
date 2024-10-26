@@ -113,7 +113,7 @@ body {
   margin-top: 2rem;
 }
 
-#entries > * + * {
+.line {
   border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
 

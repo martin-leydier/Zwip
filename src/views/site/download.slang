@@ -1,4 +1,4 @@
-.entry.tooltip.tooltip-bottom data-tooltip="Go back home"
+.entry.tooltip.tooltip-bottom.line data-tooltip="Go back home"
   a.highlightable.entry-link href="/" onclick="event.preventDefault();navigateContent('/')"
     i.fas.fa-home
     .content
@@ -21,6 +21,6 @@
     - if cart_empty?(env)
       | Cart is empty
     - else
-      .button.tooltip.tooltip-bottom.tooltip-large data-tooltip="Multi-link download will start one download per file in the cart. This allows you to pause/resume your download. Depending on the number of files, you may experience issues like crashes or slow-downs.\nYou may also get a warning from your browser about trying to download multiple files.\nThis requires JavaScript to be enabled" onclick="multiDownload()"
+      .button.tooltip.tooltip-bottom.tooltip-large data-tooltip="Multi-link download will start one download per file in the cart. This allows you to pause/resume your download. Depending on the number of files, you may experience issues like crashes or slow-downs.&#XA;You may also get a warning from your browser about trying to download multiple files.&#XA;This requires JavaScript to be enabled" onclick="multiDownload()"
         i.download.icon
         ' Download

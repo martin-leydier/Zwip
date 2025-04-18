@@ -308,7 +308,7 @@ body {
     max-width: 320px;
     opacity: 0;
     overflow: hidden;
-    padding: .2rem .4rem;
+    padding: .5rem .5rem;
     pointer-events: none;
     position: absolute;
     text-overflow: ellipsis;

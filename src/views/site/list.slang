@@ -21,24 +21,17 @@
         i.fas.fa-fw.fa-slash.fa-stack-1x.double-slash
       h3 | Your cart is empty
 #entries
+  - first_entry = true
   - cart.each do |file|
-    .entry
-      - if file.directory?
-        a.entry-link
-          i.fas.fa-fw.fa-folder
-          .space-between.mono
-            .content
-              = file.path
-            .size-badge
-              = file.size.humanize_bytes
-      - else
-        .entry-link
-          i.fas.fa-fw class=file.icon
-          .space-between.mono
-            .content
-              = file.path
-            .size-badge
-              = file.size.humanize_bytes
+    .entry class="#{"line" unless first_entry}"
+      - first_entry = false
+      .entry-link
+        i.fas.fa-fw class=file.icon
+        .space-between.mono
+          .content
+            = file.path
+          .size-badge
+            = file.size.humanize_bytes
       .entry-buttons
         a.entry-button.highlightable.tooltip.tooltip-bottom data-tooltip="Download entry" href="/.zip?files=#{URI.encode_www_form file.path, space_to_plus: false}"
           i.fas.fa-fw.fa-download
